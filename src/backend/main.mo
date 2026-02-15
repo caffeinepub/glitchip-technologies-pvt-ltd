@@ -5,14 +5,13 @@ import Runtime "mo:core/Runtime";
 import Principal "mo:core/Principal";
 import Iter "mo:core/Iter";
 import Nat "mo:core/Nat";
-import Migration "migration";
 
 import MixinAuthorization "authorization/MixinAuthorization";
 import AccessControl "authorization/access-control";
 import MixinStorage "blob-storage/Mixin";
 import Storage "blob-storage/Storage";
+import Migration "migration";
 
-// Specify migration function in with-clause
 (with migration = Migration.run)
 actor {
   public type ExperienceRange = {
@@ -90,18 +89,7 @@ actor {
       title = "Physical Design Engineer";
       description = "Responsible for synthesizing and implementing digital circuit designs into physical layouts. Key tasks include floorplanning, clock tree synthesis, place and route, and timing optimization.";
       responsibilities = "Synthesize and place digital circuit designs, optimize layouts for power and efficiency, perform timing analysis, collaborate with cross-functional teams";
-      salaryRange = "INR 5–20 LPA";
-      experienceRange = {
-        minYears = 0;
-        maxYears = 5;
-      };
-    },
-    {
-      jobId = "B7X8D4F";
-      title = "Design Engineer";
-      description = "Tasked with developing and verifying digital designs using hardware description languages such as VHDL or Verilog. Responsible for ensuring functionality, synthesis, and reliability of digital circuits.";
-      responsibilities = "Develop digital designs, verify using simulation tools, write testbenches, integrate designs with other system components";
-      salaryRange = "INR 5–20 LPA";
+      salaryRange = "INR 4–20 LPA";
       experienceRange = {
         minYears = 0;
         maxYears = 5;
@@ -112,7 +100,7 @@ actor {
       title = "Design Verification Engineer";
       description = "Responsible for testing and verifying digital designs to ensure they meet specifications. Involves developing verification plans, writing test cases, and executing simulations.";
       responsibilities = "Develop and execute verification plans, write testbenches and assertions, debug verification failures, work with design teams";
-      salaryRange = "INR 5–20 LPA";
+      salaryRange = "INR 4–20 LPA";
       experienceRange = {
         minYears = 0;
         maxYears = 5;
@@ -123,7 +111,7 @@ actor {
       title = "DFT Engineer";
       description = "Focuses on designing and implementing design-for-test (DFT) methodologies. Includes scan insertion, test pattern development, and generating test strategies for digital circuits.";
       responsibilities = "Implement scan insertion and pattern generation, develop test strategies, analyze test coverage data, collaborate with design teams";
-      salaryRange = "INR 5–20 LPA";
+      salaryRange = "INR 4–20 LPA";
       experienceRange = {
         minYears = 0;
         maxYears = 5;
@@ -134,7 +122,7 @@ actor {
       title = "AI Automation Engineer";
       description = "Leverages artificial intelligence and machine learning to automate design and verification processes. Guides automation tool selection, workflow development, and machine learning algorithms.";
       responsibilities = "Implement AI automation tools, optimize workflows, use machine learning for design automation, collaborate with R&D teams";
-      salaryRange = "INR 5–20 LPA";
+      salaryRange = "INR 4–20 LPA";
       experienceRange = {
         minYears = 0;
         maxYears = 5;
@@ -175,7 +163,14 @@ actor {
 
   // Public job listing endpoints
   public query ({ caller }) func getAllJobs() : async [JobPosting] {
-    jobs.values().toArray();
+    let allJobs = jobs.values().toArray();
+    allJobs.filter<JobPosting>(
+      func(job : JobPosting) : Bool {
+        job.title != "Frontend Developer" and
+        job.title != "Backend Developer" and
+        job.title != "Mobile App Developer"
+      }
+    );
   };
 
   public query ({ caller }) func getJobById(jobId : Text) : async ?JobPosting {
@@ -233,7 +228,7 @@ actor {
     address : Text;
   } {
     {
-      email = "contact@glitchip.in";
+      email = "hr@glitchip.in";
       phone = "+91 99 9999 9999";
       address = "Bengaluru, India";
     };

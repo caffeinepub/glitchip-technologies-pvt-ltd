@@ -90,6 +90,13 @@ export default function CareersPage() {
     setIsApplyDialogOpen(true);
   };
 
+  const handleDialogClose = (open: boolean) => {
+    setIsApplyDialogOpen(open);
+    if (!open) {
+      setSelectedJob(null);
+    }
+  };
+
   const handleAddEducation = () => {
     setEducation([
       ...education,
@@ -273,6 +280,7 @@ export default function CareersPage() {
       });
 
       setIsApplyDialogOpen(false);
+      setSelectedJob(null);
       resetForm();
     } catch (error) {
       console.error('Application submission error:', error);
@@ -432,7 +440,7 @@ export default function CareersPage() {
       </section>
 
       {/* Application Dialog */}
-      <Dialog open={isApplyDialogOpen} onOpenChange={setIsApplyDialogOpen}>
+      <Dialog open={isApplyDialogOpen} onOpenChange={handleDialogClose}>
         <DialogContent className="max-w-3xl max-h-[90vh]">
           <DialogHeader>
             <DialogTitle className="text-2xl">Apply for {selectedJob?.title}</DialogTitle>
@@ -524,7 +532,7 @@ export default function CareersPage() {
                     required
                     value={formData.address}
                     onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                    placeholder="123 Main Street, City, State, ZIP"
+                    placeholder="123 Main Street"
                   />
                 </div>
 
@@ -534,11 +542,57 @@ export default function CareersPage() {
                     id="currentLocation"
                     required
                     value={formData.currentLocation}
-                    onChange={(e) =>
-                      setFormData({ ...formData, currentLocation: e.target.value })
-                    }
+                    onChange={(e) => setFormData({ ...formData, currentLocation: e.target.value })}
                     placeholder="Bengaluru, India"
                   />
+                </div>
+              </div>
+
+              {/* Professional Information */}
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold border-b pb-2">Professional Information</h3>
+
+                <div>
+                  <Label htmlFor="expectedPay">Expected Pay (LPA) *</Label>
+                  <Input
+                    id="expectedPay"
+                    required
+                    value={formData.expectedPay}
+                    onChange={(e) => setFormData({ ...formData, expectedPay: e.target.value })}
+                    placeholder="8 LPA"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="totalWorkExperience">Total Work Experience *</Label>
+                  <Input
+                    id="totalWorkExperience"
+                    required
+                    value={formData.totalWorkExperience}
+                    onChange={(e) =>
+                      setFormData({ ...formData, totalWorkExperience: e.target.value })
+                    }
+                    placeholder="3 years"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="resume">Resume (PDF) *</Label>
+                  <Input
+                    id="resume"
+                    type="file"
+                    accept=".pdf"
+                    required
+                    onChange={handleResumeChange}
+                  />
+                  {resumeFile && (
+                    <p className="text-sm text-muted-foreground mt-1">
+                      Selected: {resumeFile.name}
+                    </p>
+                  )}
+                  {uploadProgress > 0 && uploadProgress < 100 && (
+                    <p className="text-sm text-cyan-600 mt-1">Uploading: {uploadProgress}%</p>
+                  )}
                 </div>
               </div>
 
@@ -595,9 +649,7 @@ export default function CareersPage() {
                             id={`degree-${index}`}
                             required
                             value={edu.degree}
-                            onChange={(e) =>
-                              handleEducationChange(index, 'degree', e.target.value)
-                            }
+                            onChange={(e) => handleEducationChange(index, 'degree', e.target.value)}
                             placeholder="B.Tech"
                           />
                         </div>
@@ -610,7 +662,7 @@ export default function CareersPage() {
                             onChange={(e) =>
                               handleEducationChange(index, 'fieldOfStudy', e.target.value)
                             }
-                            placeholder="Electronics Engineering"
+                            placeholder="Electronics"
                           />
                         </div>
                       </div>
@@ -627,8 +679,6 @@ export default function CareersPage() {
                               handleEducationChange(index, 'startYear', e.target.value)
                             }
                             placeholder="2018"
-                            min="1950"
-                            max="2030"
                           />
                         </div>
                         <div>
@@ -641,8 +691,6 @@ export default function CareersPage() {
                               handleEducationChange(index, 'endYear', e.target.value)
                             }
                             placeholder="2022"
-                            min="1950"
-                            max="2030"
                           />
                         </div>
                       </div>
@@ -652,7 +700,7 @@ export default function CareersPage() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="collegeUniversityName">Primary College/University *</Label>
+                    <Label htmlFor="collegeUniversityName">College/University Name *</Label>
                     <Input
                       id="collegeUniversityName"
                       required
@@ -672,8 +720,6 @@ export default function CareersPage() {
                       value={formData.passoutYear}
                       onChange={(e) => setFormData({ ...formData, passoutYear: e.target.value })}
                       placeholder="2022"
-                      min="1950"
-                      max="2030"
                     />
                   </div>
                 </div>
@@ -734,7 +780,7 @@ export default function CareersPage() {
                             onChange={(e) =>
                               handleWorkExperienceChange(index, 'position', e.target.value)
                             }
-                            placeholder="VLSI Engineer"
+                            placeholder="Software Engineer"
                           />
                         </div>
                       </div>
@@ -751,8 +797,6 @@ export default function CareersPage() {
                               handleWorkExperienceChange(index, 'startYear', e.target.value)
                             }
                             placeholder="2020"
-                            min="1950"
-                            max="2030"
                           />
                         </div>
                         <div>
@@ -765,8 +809,6 @@ export default function CareersPage() {
                               handleWorkExperienceChange(index, 'endYear', e.target.value)
                             }
                             placeholder="2023"
-                            min="1950"
-                            max="2030"
                           />
                         </div>
                       </div>
@@ -787,71 +829,9 @@ export default function CareersPage() {
                     </div>
                   </Card>
                 ))}
-
-                <div>
-                  <Label htmlFor="totalWorkExperience">Total Work Experience *</Label>
-                  <Input
-                    id="totalWorkExperience"
-                    required
-                    value={formData.totalWorkExperience}
-                    onChange={(e) =>
-                      setFormData({ ...formData, totalWorkExperience: e.target.value })
-                    }
-                    placeholder="e.g., 3 years"
-                  />
-                </div>
               </div>
 
-              {/* Compensation */}
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold border-b pb-2">Compensation</h3>
-                <div>
-                  <Label htmlFor="expectedPay">Expected Pay (Annual) *</Label>
-                  <Input
-                    id="expectedPay"
-                    required
-                    value={formData.expectedPay}
-                    onChange={(e) => setFormData({ ...formData, expectedPay: e.target.value })}
-                    placeholder="e.g., INR 10 LPA"
-                  />
-                </div>
-              </div>
-
-              {/* Resume Upload */}
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold border-b pb-2">Resume</h3>
-                <div>
-                  <Label htmlFor="resume">Upload Resume *</Label>
-                  <Input
-                    id="resume"
-                    type="file"
-                    required
-                    onChange={handleResumeChange}
-                    accept=".pdf,.doc,.docx"
-                    className="cursor-pointer"
-                  />
-                  {resumeFile && (
-                    <p className="text-sm text-muted-foreground mt-2">
-                      Selected: {resumeFile.name}
-                    </p>
-                  )}
-                  {uploadProgress > 0 && uploadProgress < 100 && (
-                    <div className="mt-2">
-                      <div className="flex items-center gap-2">
-                        <div className="flex-1 bg-muted rounded-full h-2 overflow-hidden">
-                          <div
-                            className="bg-cyan-500 h-full transition-all duration-300"
-                            style={{ width: `${uploadProgress}%` }}
-                          />
-                        </div>
-                        <span className="text-sm text-muted-foreground">{uploadProgress}%</span>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Additional Message */}
+              {/* Additional Information */}
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold border-b pb-2">Additional Information</h3>
                 <div>
@@ -860,72 +840,53 @@ export default function CareersPage() {
                     id="message"
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    placeholder="Tell us why you're a great fit for this role..."
+                    placeholder="Tell us why you're interested in this position..."
                     rows={4}
                   />
                 </div>
               </div>
 
               {/* Terms and Conditions */}
-              <div className="space-y-4">
-                <div className="flex items-start space-x-2">
-                  <Checkbox
-                    id="terms"
-                    checked={formData.termsAccepted}
-                    onCheckedChange={(checked) =>
-                      setFormData({ ...formData, termsAccepted: checked === true })
-                    }
-                  />
-                  <div className="grid gap-1.5 leading-none">
-                    <Label
-                      htmlFor="terms"
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                      I accept the terms and conditions *
-                    </Label>
-                    <p className="text-sm text-muted-foreground">
-                      By submitting this application, you agree to our{' '}
-                      <Link
-                        to="/terms-and-conditions"
-                        className="text-cyan-600 hover:underline"
-                        target="_blank"
-                      >
-                        Terms and Conditions
-                      </Link>
-                      .
-                    </p>
-                  </div>
+              <div className="flex items-start space-x-2">
+                <Checkbox
+                  id="terms"
+                  checked={formData.termsAccepted}
+                  onCheckedChange={(checked) =>
+                    setFormData({ ...formData, termsAccepted: checked as boolean })
+                  }
+                />
+                <div className="grid gap-1.5 leading-none">
+                  <label
+                    htmlFor="terms"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    I accept the terms and conditions *
+                  </label>
+                  <p className="text-sm text-muted-foreground">
+                    By submitting this application, you agree to our{' '}
+                    <Link to="/terms-and-conditions" className="text-cyan-600 hover:underline">
+                      Terms and Conditions
+                    </Link>
+                    .
+                  </p>
                 </div>
               </div>
 
               {/* Submit Button */}
-              <div className="flex gap-4 pt-4">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => {
-                    setIsApplyDialogOpen(false);
-                    resetForm();
-                  }}
-                  className="flex-1"
-                >
-                  Cancel
-                </Button>
-                <Button
-                  type="submit"
-                  disabled={submitApplication.isPending}
-                  className="flex-1 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700"
-                >
-                  {submitApplication.isPending ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Submitting...
-                    </>
-                  ) : (
-                    'Submit Application'
-                  )}
-                </Button>
-              </div>
+              <Button
+                type="submit"
+                className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700"
+                disabled={submitApplication.isPending}
+              >
+                {submitApplication.isPending ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Submitting...
+                  </>
+                ) : (
+                  'Submit Application'
+                )}
+              </Button>
             </form>
           </ScrollArea>
         </DialogContent>

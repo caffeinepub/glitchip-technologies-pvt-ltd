@@ -173,10 +173,10 @@ export default function ContactPage() {
                       <div>
                         <h3 className="font-semibold mb-1">Email</h3>
                         <a
-                          href={`mailto:${companyContacts?.email || 'contact@glitchip.in'}`}
+                          href={`mailto:${companyContacts?.email || 'hr@glitchip.in'}`}
                           className="text-muted-foreground hover:text-primary transition-colors"
                         >
-                          {companyContacts?.email || 'contact@glitchip.in'}
+                          {companyContacts?.email || 'hr@glitchip.in'}
                         </a>
                       </div>
                     </div>

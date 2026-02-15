@@ -18,6 +18,8 @@ export function useGetAllJobs() {
       }
     },
     enabled: !!actor && !isFetching,
+    staleTime: 0,
+    refetchOnMount: 'always',
   });
 }
 

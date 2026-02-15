@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 15,
+  "projectStateVersion": 21,
   "summary": "Revamp and rebuild Glitchip Technologies Pvt. Ltd. marketing website with modern design, transitions/assets, key pages (Home, Services, Products, Careers, Why Us) and prepare deployment + connection to the existing GoDaddy domain.",
   "architectural_notes": [
     "Domain connection approach: keep domain registered at GoDaddy, use Cloudflare for DNS management to point domain to the deployed site.",
@@ -15,9 +15,10 @@
     "Home hero images are too large (3–5MB) causing delayed loading and awkward first impression; need to swap to compressed versions.",
     "Home hero chip image edges don’t blend into the background cleanly; needs a subtle blend/feather effect.",
     "A reference screenshot image was mistakenly added/used as a site asset in the deployed build; must be replaced with an appropriate/approved image immediately.",
-    "Careers pages are not showing/listing jobs after a recent update; investigate jobs list retrieval/rendering and fix regression."
+    "Careers pages are not showing/listing jobs after a recent update; investigate jobs list retrieval/rendering and fix regression.",
+    "Careers page currently shows unwanted job postings (Frontend Developer, Backend Developer, Mobile App Developer); remove these from the available/seeded jobs so they no longer appear on /careers."
   ],
-  "isFixRequest": true,
+  "isFixRequest": false,
   "existing_features": [
     {
       "id": "feature-create-a-full-multi-page-marketing-website-for-glitchip-technologies-pvt-ltd-with-the-following-top-level-pages-and-routes-home-services-services-why-us-why-us-products-products-careers-careers-and-contact-contact",
@@ -266,6 +267,22 @@
         "REQ-33"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-ensure-the-careers-page-ui-careers-reflects-the-updated-backend-job-postings-without-additional-role-specific-hardcoding-the-open-positions-section-must-render-only-the-four-updated-roles-show-the-experience-as-0-5-years-for-each-and-show-the-salary-as-inr-4-20-lpa-for-each",
+      "title": "Ensure the Careers page UI (/careers) reflects the updated backend job postings without additional role-specific hardcoding: the Open Positions section must render only the four updated roles, show the experience as \"0–5 years\" for each, and show the salary as \"INR 4–20 LPA\" for each.",
+      "reqIds": [
+        "REQ-35"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-contact-page-to-display-and-link-to-hr-glitchip-in-as-the-default-fallback-email-when-companycontacts-are-not-available-ensuring-the-rendered-mailto-link-uses-the-same-address",
+      "title": "Update the Contact page to display and link to \"hr@glitchip.in\" as the default/fallback email when companyContacts are not available, ensuring the rendered mailto link uses the same address.",
+      "reqIds": [
+        "REQ-37"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -370,9 +387,47 @@
       "status": "pending"
     },
     {
-      "id": "AR-31",
-      "summary": "Add new Careers job postings: Physical Design Engineer, Design Engineer, Design Verification Engineer, DFT Engineer, AI Automation Engineer; each with 0–5 years experience range, 5–20 salary range, and appropriate 6–7 character alphanumeric Job IDs.",
+      "id": "AR-32",
+      "summary": "Update Careers open job postings to exactly these four VLSI roles: Physical Design Engineer, Design Verification Engineer, DFT Engineer, AI Automation Engineer; remove any other roles; set experience range to 0–5 years for all and salary to 4–20 LPA for all.",
       "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-33",
+      "summary": "Update the backend seeded job postings so that the Careers jobs list contains exactly these four roles (and no others): Physical Design Engineer, Design Verification Engineer, DFT Engineer, AI Automation Engineer. Each job must have an experience range of 0–5 years and a salary range displayed as \"INR 4–20 LPA\". Remove any other current seeded roles (e.g., \"Design Engineer\"). Keep Job IDs unique and compliant with the existing 6–7 character alphanumeric (A–Z, 0–9) format.",
+      "reqIds": [
+        "REQ-34"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-34",
+      "summary": "Update Contact page company email to hr@glitchip.in",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-35",
+      "summary": "Update the backend company contact information returned by getCompanyContacts so that the email value is \"hr@glitchip.in\" (instead of \"contact@glitchip.in\").",
+      "reqIds": [
+        "REQ-36"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-36",
+      "summary": "Update the Careers page Open Positions list rendering so that the three selected job cards for “Frontend Developer”, “Backend Developer”, and “Mobile App Developer” are not shown on /careers.",
+      "reqIds": [
+        "REQ-38"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-37",
+      "summary": "Ensure the backend job postings returned by getAllJobs() do not include any postings titled “Frontend Developer”, “Backend Developer”, or “Mobile App Developer”, so these roles cannot reappear after refresh/redeploy.",
+      "reqIds": [
+        "REQ-39"
+      ],
       "status": "pending"
     }
   ],

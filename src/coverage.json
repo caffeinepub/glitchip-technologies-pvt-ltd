@@ -1,53 +1,30 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-15T10:44:46.242Z",
+  "generatedAt": "2026-02-15T11:27:26.766Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 3,
-    "implemented": 3,
+    "total": 2,
+    "implemented": 0,
     "items": [
       {
-        "id": "REQ-31",
-        "summary": "Fix the regression causing the Careers page jobs list to show no jobs after the recent update by identifying whether the failure is due to React Query/actor readiness, a failed backend call, or a rendering/empty-state bug, and update the frontend and/or backend so job postings reliably appear on /careers.",
-        "status": "implemented",
+        "id": "REQ-38",
+        "summary": "Update the Careers page Open Positions list rendering so that the three selected job cards for “Frontend Developer”, “Backend Developer”, and “Mobile App Developer” are not shown on /careers.",
+        "status": "missing",
         "plannedFiles": [
-          "frontend/src/hooks/useQueries.ts",
           "frontend/src/pages/CareersPage.tsx"
         ],
-        "matchedFiles": [
-          "frontend/src/hooks/useQueries.ts",
-          "frontend/src/pages/CareersPage.tsx"
-        ]
+        "matchedFiles": []
       },
       {
-        "id": "REQ-32",
-        "summary": "Add support for an explicit experience range to job postings (0–5 years for the new roles) by extending the JobPosting data model and ensuring the Careers UI displays this experience range on the job cards and in the apply dialog/job detail view.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/pages/CareersPage.tsx",
-          "frontend/src/hooks/useQueries.ts"
-        ],
-        "matchedFiles": [
-          "frontend/src/pages/CareersPage.tsx",
-          "frontend/src/hooks/useQueries.ts"
-        ]
-      },
-      {
-        "id": "REQ-33",
-        "summary": "Update the seeded/available job postings to include exactly these five roles: Physical Design Engineer, Design Engineer, Design Verification Engineer, DFT Engineer, AI Automation Engineer. Each role must use an experience range of 0–5 years and a salary range of 5–20 (expressed clearly in user-facing text, e.g., “INR 5–20 LPA”), and each must have an appropriate unique Job ID that matches the existing 6–7 character alphanumeric (A–Z, 0–9) format requirement.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/pages/CareersPage.tsx",
-          "frontend/src/utils/jobId.ts"
-        ],
-        "matchedFiles": [
-          "frontend/src/pages/CareersPage.tsx",
-          "frontend/src/utils/jobId.ts"
-        ]
+        "id": "REQ-39",
+        "summary": "Ensure the backend job postings returned by getAllJobs() do not include any postings titled “Frontend Developer”, “Backend Developer”, or “Mobile App Developer”, so these roles cannot reappear after refresh/redeploy.",
+        "status": "unknown",
+        "plannedFiles": [],
+        "matchedFiles": []
       }
     ]
   },
@@ -56,15 +33,7 @@
     "backend/migration.mo",
     "build-request.json",
     "feature_evidence.json",
-    "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/backend.d.ts",
-    "frontend/src/backend.ts",
-    "frontend/src/declarations/backend.did.d.ts",
-    "frontend/src/declarations/backend.did.js",
-    "frontend/src/hooks/useQueries.ts",
-    "frontend/src/pages/CareersPage.tsx",
-    "frontend/src/utils/jobId.ts",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

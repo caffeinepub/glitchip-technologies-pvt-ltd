@@ -1,72 +1,21 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Fix Careers jobs list regression and display experience/salary fields correctly",
+  "title": "Remove specific developer job cards from Careers Open Positions",
   "requirements": [
     {
-      "id": "REQ-31",
-      "summary": "Fix /careers jobs list regression by making the jobs query actor-readiness safe and adding explicit loading/error/empty UI states.",
+      "id": "REQ-38",
+      "summary": "Filter the Careers page Open Positions rendering so job cards titled “Frontend Developer”, “Backend Developer”, and “Mobile App Developer” are not displayed on /careers.",
       "acceptanceCriteria": [
-        "Navigating to /careers displays a non-empty list of jobs when jobs exist in the canister.",
-        "If the backend call to fetch jobs fails, the UI shows a clear error state (not a blank section) and logs the error for debugging.",
-        "If there are truly zero jobs returned, the UI shows an explicit empty-state message (e.g., “No open positions at the moment. Please check back soon.”) instead of appearing broken.",
-        "The jobs query executes successfully for anonymous users (not logged in) and does not require Internet Identity to see job listings."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/hooks/useQueries.ts",
-          "operation": "modify",
-          "description": "Harden useGetAllJobs against actor readiness issues: avoid returning an immediate empty array when the actor is unavailable, ensure the query is properly gated by actor availability, and surface error states (including console logging) so failures do not render as a blank jobs section."
-        },
-        {
-          "path": "frontend/src/pages/CareersPage.tsx",
-          "operation": "modify",
-          "description": "Update the Jobs section rendering to handle all states explicitly: show a loading UI while the jobs query is pending, show a visible error block/message when the query fails (and ensure the error is logged), and show an explicit empty-state message when jobs resolve to an empty list; prevent the current silent blank render when jobs is undefined or empty."
-        }
-      ]
-    },
-    {
-      "id": "REQ-32",
-      "summary": "Display the structured experience range field for each job on the Careers job cards and inside the apply dialog/job detail header.",
-      "acceptanceCriteria": [
-        "Backend JobPosting includes a dedicated experience field (or equivalent structured representation) that can represent “0–5 years”.",
-        "Careers job cards show the experience range for each job.",
-        "The apply dialog/job detail view also shows the experience range for the selected job.",
-        "Existing job listing and job lookup endpoints continue to work with the updated JobPosting shape."
+        "On /careers, the Open Positions grid no longer displays job cards with titles “Frontend Developer”, “Backend Developer”, or “Mobile App Developer”.",
+        "Only the remaining job cards (e.g., the VLSI roles returned from the backend) are rendered in the Open Positions section.",
+        "No layout gaps or empty placeholders remain where the removed job cards previously appeared."
       ],
       "file_operations": [
         {
           "path": "frontend/src/pages/CareersPage.tsx",
           "operation": "modify",
-          "description": "Render JobPosting.experienceRange (minYears/maxYears) in the job card metadata and in the apply dialog header/details for the selected job, formatting it as a user-friendly range such as “0–5 years”."
-        },
-        {
-          "path": "frontend/src/hooks/useQueries.ts",
-          "operation": "modify",
-          "description": "Ensure the jobs query typing/consumption aligns with the JobPosting shape that includes experienceRange so the UI can reliably read and display it."
-        }
-      ]
-    },
-    {
-      "id": "REQ-33",
-      "summary": "Ensure the Careers UI correctly presents the five seeded VLSI roles by showing job ID, experience range (0–5 years), and salary range (INR 5–20 LPA) in clear user-facing text and maintaining Apply flow compatibility.",
-      "acceptanceCriteria": [
-        "The backend job list contains these five roles and exposes them via getAllJobs().",
-        "Each of the five roles has a unique Job ID that is 6–7 characters and strictly alphanumeric (A–Z, 0–9).",
-        "Each of the five roles shows an experience range of 0–5 years in the UI.",
-        "Each of the five roles shows a salary range of 5–20 in the UI in clear English formatting (e.g., “INR 5–20 LPA”).",
-        "Users can click “Apply Now” and successfully submit an application against any of the five job IDs without backend validation errors."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/CareersPage.tsx",
-          "operation": "modify",
-          "description": "Fix salary field rendering to use the backend-provided JobPosting.salaryRange (instead of the non-existent job.salary), format it as clear text (e.g., “INR 5–20 LPA”), and ensure the job card and apply dialog display jobId, salaryRange, and experienceRange consistently for the five seeded roles."
-        },
-        {
-          "path": "frontend/src/utils/jobId.ts",
-          "operation": "modify",
-          "description": "Align job ID validation with the documented 6–7 character strictly alphanumeric (A–Z, 0–9) requirement by ensuring the regex enforces uppercase letters and digits only (no lowercase), keeping the existing error messaging behavior intact."
+          "description": "Within the Open Positions section rendering, introduce a small title-based exclusion list for the three specified roles and derive a filtered jobs array used for (1) the empty-state check and (2) the jobs.map() that renders job cards, ensuring the excluded roles never produce cards or empty placeholders. Keep changes scoped to the Open Positions/job-card rendering only, without modifying layout, form fields, or other page sections."
         }
       ]
     }

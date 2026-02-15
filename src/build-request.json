@@ -1,75 +1,53 @@
 {
   "kind": "build_request",
-  "title": "Fix Careers jobs list regression and add 5 new VLSI engineering job postings",
-  "priority": "high",
+  "title": "Remove Frontend/Backend/Mobile Developer job postings from Careers page",
+  "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-31",
-      "text": "Fix the regression causing the Careers page jobs list to show no jobs after the recent update by identifying whether the failure is due to React Query/actor readiness, a failed backend call, or a rendering/empty-state bug, and update the frontend and/or backend so job postings reliably appear on /careers.",
-      "target": "both",
+      "id": "REQ-38",
+      "text": "Update the Careers page Open Positions list rendering so that the three selected job cards for “Frontend Developer”, “Backend Developer”, and “Mobile App Developer” are not shown on /careers.",
+      "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-8"
+          "msg-20"
         ],
         "quotes": [
-          "The career pages are not showing the jobs after recent update, so just check this issue and update accordingly."
+          "Remove the frontend developer, Backend Developer, Mobile App Developer job postings in the careers page"
         ]
       },
       "acceptanceCriteria": [
-        "Navigating to /careers displays a non-empty list of jobs when jobs exist in the canister.",
-        "If the backend call to fetch jobs fails, the UI shows a clear error state (not a blank section) and logs the error for debugging.",
-        "If there are truly zero jobs returned, the UI shows an explicit empty-state message (e.g., “No open positions at the moment. Please check back soon.”) instead of appearing broken.",
-        "The jobs query executes successfully for anonymous users (not logged in) and does not require Internet Identity to see job listings."
+        "On /careers, the Open Positions grid no longer displays job cards with titles “Frontend Developer”, “Backend Developer”, or “Mobile App Developer”.",
+        "Only the remaining job cards (e.g., the VLSI roles returned from the backend) are rendered in the Open Positions section.",
+        "No layout gaps or empty placeholders remain where the removed job cards previously appeared."
       ]
     },
     {
-      "id": "REQ-32",
-      "text": "Add support for an explicit experience range to job postings (0–5 years for the new roles) by extending the JobPosting data model and ensuring the Careers UI displays this experience range on the job cards and in the apply dialog/job detail view.",
-      "target": "both",
+      "id": "REQ-39",
+      "text": "Ensure the backend job postings returned by getAllJobs() do not include any postings titled “Frontend Developer”, “Backend Developer”, or “Mobile App Developer”, so these roles cannot reappear after refresh/redeploy.",
+      "target": "backend",
       "source": {
         "messageIds": [
-          "msg-8"
+          "msg-20"
         ],
         "quotes": [
-          "With exp level from 0-5 years"
+          "Remove the frontend developer, Backend Developer, Mobile App Developer job postings in the careers page"
         ]
       },
       "acceptanceCriteria": [
-        "Backend JobPosting includes a dedicated experience field (or equivalent structured representation) that can represent “0–5 years”.",
-        "Careers job cards show the experience range for each job.",
-        "The apply dialog/job detail view also shows the experience range for the selected job.",
-        "Existing job listing and job lookup endpoints continue to work with the updated JobPosting shape."
-      ]
-    },
-    {
-      "id": "REQ-33",
-      "text": "Update the seeded/available job postings to include exactly these five roles: Physical Design Engineer, Design Engineer, Design Verification Engineer, DFT Engineer, AI Automation Engineer. Each role must use an experience range of 0–5 years and a salary range of 5–20 (expressed clearly in user-facing text, e.g., “INR 5–20 LPA”), and each must have an appropriate unique Job ID that matches the existing 6–7 character alphanumeric (A–Z, 0–9) format requirement.",
-      "target": "both",
-      "source": {
-        "messageIds": [
-          "msg-8"
-        ],
-        "quotes": [
-          "Then add, Physical Design Engineer, Design Engineer, Design Verification Engineer, DFT Engineer, AI Automation Engineer. roles,\n\nWith exp level from 0-5 years, salary ranges from 5-20, With appropriate JOB ID's"
-        ]
-      },
-      "acceptanceCriteria": [
-        "The backend job list contains these five roles and exposes them via getAllJobs().",
-        "Each of the five roles has a unique Job ID that is 6–7 characters and strictly alphanumeric (A–Z, 0–9).",
-        "Each of the five roles shows an experience range of 0–5 years in the UI.",
-        "Each of the five roles shows a salary range of 5–20 in the UI in clear English formatting (e.g., “INR 5–20 LPA”).",
-        "Users can click “Apply Now” and successfully submit an application against any of the five job IDs without backend validation errors."
+        "Calling getAllJobs() does not return any JobPosting whose title is “Frontend Developer”, “Backend Developer”, or “Mobile App Developer”.",
+        "After redeploying/upgrading the canister, /careers still does not show the removed roles."
       ]
     }
   ],
   "constraints": [
-    "Respect the single-actor backend architecture: keep all Motoko logic in backend/main.mo (only add backend/migration.mo if an actual state migration is required).",
-    "Do not edit files under frontend/src/components/ui, frontend/src/hooks/useInternetIdentity.ts(x), frontend/src/hooks/useActor.ts, or frontend/src/main.tsx (immutable paths)."
+    "Apply changes only to the Careers page Open Positions/job-card elements referenced by the user-selected XPaths (the three job cards in section[2] of /careers).",
+    "Respect the existing single-actor Motoko backend architecture (all logic in backend/main.mo).",
+    "Do not edit files under frontend/src/components/ui or other frontend immutable paths listed in SYSTEM_CONTEXT."
   ],
   "nonGoals": [
-    "Adding real-time job updates, push notifications, or chat features.",
-    "Implementing a full admin UI for managing job postings (create/update/delete) beyond seeding and retrieval.",
-    "Integrating third-party ATS, email delivery, or external databases."
+    "Do not redesign the Careers page layout beyond removing the specified job postings.",
+    "Do not add new job postings or change the content of the remaining VLSI job postings.",
+    "Do not change the job application form fields or submission flow."
   ],
   "imageRequirements": {
     "required": [],
