@@ -1,371 +1,72 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Glitchip Technologies marketing site revamp (multi-page, branded assets, careers + contact forms, transitions)",
+  "title": "Fix Careers jobs list regression and display experience/salary fields correctly",
   "requirements": [
     {
-      "id": "REQ-1",
-      "summary": "Create multi-page marketing site with routes: Home, Services, Why Us, Products, Careers, Contact.",
+      "id": "REQ-31",
+      "summary": "Fix /careers jobs list regression by making the jobs query actor-readiness safe and adding explicit loading/error/empty UI states.",
       "acceptanceCriteria": [
-        "Navigating to /, /services, /why-us, /products, /careers, and /contact renders distinct pages with relevant content and consistent layout.",
-        "All pages are reachable via global header navigation and have working internal links/CTAs.",
-        "Pages are responsive across mobile/tablet/desktop."
+        "Navigating to /careers displays a non-empty list of jobs when jobs exist in the canister.",
+        "If the backend call to fetch jobs fails, the UI shows a clear error state (not a blank section) and logs the error for debugging.",
+        "If there are truly zero jobs returned, the UI shows an explicit empty-state message (e.g., “No open positions at the moment. Please check back soon.”) instead of appearing broken.",
+        "The jobs query executes successfully for anonymous users (not logged in) and does not require Internet Identity to see job listings."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/App.tsx",
-          "operation": "create",
-          "description": "Create the top-level React app wiring for the marketing site routes and shared layout shell (header/footer wrapper). Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/pages/HomePage.tsx",
-          "operation": "create",
-          "description": "Create the Home route page with marketing content sections per requirements and CTAs wired to existing routes. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/pages/ServicesPage.tsx",
-          "operation": "create",
-          "description": "Create the Services route page with the five required service sections and consistent card/section layout. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/pages/WhyUsPage.tsx",
-          "operation": "create",
-          "description": "Create the Why Us route page with value-proposition sections and a process-style visual section. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/pages/ProductsPage.tsx",
-          "operation": "create",
-          "description": "Create the Products route page with the required placeholder message and a future-ready empty-state layout for product cards. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/pages/CareersPage.tsx",
-          "operation": "create",
-          "description": "Create the Careers route page shell that hosts the jobs list, job detail, and apply flow UI (data wired in REQ-8). Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/pages/ContactPage.tsx",
-          "operation": "create",
-          "description": "Create the Contact route page shell that hosts the contact form and static company contact info (submission wired in REQ-10). Verify the component's usage instructions before implementing."
-        }
-      ]
-    },
-    {
-      "id": "REQ-2",
-      "summary": "Implement global header/footer with nav, CTA, social placeholders, company name, and services list.",
-      "acceptanceCriteria": [
-        "Header and footer render consistently on all routes.",
-        "Active navigation state is visible for the current route.",
-        "Header is usable on mobile (hamburger/drawer menu or equivalent)."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/SiteHeader.tsx",
-          "operation": "create",
-          "description": "Create a global header with primary navigation, active route styling, and prominent \"Get in touch\" CTA. Use shadcn-ui components (e.g., Button + Sheet/Drawer pattern) for mobile navigation; verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/components/SiteFooter.tsx",
-          "operation": "create",
-          "description": "Create a global footer with company name, social link placeholders, and a compact services list, consistent across all routes. Use shadcn-ui components (e.g., Button/link styling) as needed; verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/components/MarketingLayout.tsx",
-          "operation": "create",
-          "description": "Create a shared layout wrapper that renders SiteHeader + page content + SiteFooter for all main routes. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/App.tsx",
+          "path": "frontend/src/hooks/useQueries.ts",
           "operation": "modify",
-          "description": "Wire MarketingLayout into the router so header/footer appear on all main and subpages, and ensure navigation links reach each route. Verify the component's usage instructions before implementing."
-        }
-      ]
-    },
-    {
-      "id": "REQ-3",
-      "summary": "Apply provided logo across the site (header, footer, favicon/app icon) with crisp rendering.",
-      "acceptanceCriteria": [
-        "Logo appears in header and footer.",
-        "Logo maintains correct aspect ratio and is not pixelated on standard and high-DPI screens.",
-        "A favicon/app icon is present and based on the provided logo."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/public/assets/IMG-20250404-WA0002.png",
-          "operation": "create",
-          "description": "Add the provided logo file as a public static asset for reuse across header/footer and metadata."
-        },
-        {
-          "path": "frontend/public/favicon.png",
-          "operation": "create",
-          "description": "Add a favicon image based on the provided logo (may be the same image or a derived square icon) for browser tabs/app icon usage."
-        },
-        {
-          "path": "frontend/index.html",
-          "operation": "modify",
-          "description": "Reference the favicon/app icon assets in document head (favicon and optional touch icon) and keep the title as \"Glitchip Technologies Pvt. Ltd.\"."
-        },
-        {
-          "path": "frontend/src/components/SiteHeader.tsx",
-          "operation": "modify",
-          "description": "Render the logo asset from frontend/public/assets/IMG-20250404-WA0002.png with accessible alt text and crisp sizing on light/dark backgrounds. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/components/SiteFooter.tsx",
-          "operation": "modify",
-          "description": "Render the logo asset from frontend/public/assets/IMG-20250404-WA0002.png in the footer with consistent sizing and contrast. Verify the component's usage instructions before implementing."
-        }
-      ]
-    },
-    {
-      "id": "REQ-4",
-      "summary": "Build a high-impact VLSI-focused Home page with hero, services overview, differentiators teaser, stats, and final CTA using visuals.",
-      "acceptanceCriteria": [
-        "Home page contains at least: Hero, Services overview, Why Us teaser, and CTA sections with readable, non-placeholder copy.",
-        "Home page includes at least 2 distinct visual assets (hero + section illustration/pattern).",
-        "Primary CTA from hero leads to Contact or Services and works."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/HomePage.tsx",
-          "operation": "modify",
-          "description": "Implement hero (headline/subheadline/CTA), services overview, Why Us teaser, capability/stats highlights, and final CTA; reference generated visuals from frontend/public/assets/generated/glitchip-hero.dim_1920x1080.png and frontend/public/assets/generated/glitchip-circuit-pattern.dim_2048x2048.png. Use shadcn-ui components (e.g., Button, Card) for consistent CTAs and sections; verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Ensure Home page CTAs link to /contact or /services using the app router navigation. Verify the component's usage instructions before implementing."
-        }
-      ]
-    },
-    {
-      "id": "REQ-5",
-      "summary": "Create Services page with exactly five offerings, each including summary, capabilities, deliverables, engagement teaser, and icons/illustrations.",
-      "acceptanceCriteria": [
-        "Services page lists exactly the five named services with distinct sections/cards.",
-        "Each service shows: summary, capabilities, deliverables, and a short engagement note.",
-        "Each service section includes an icon/illustration asset and consistent styling."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/ServicesPage.tsx",
-          "operation": "modify",
-          "description": "Implement exactly five service sections (Physical Design, Design Verification, DFT, AI Automation for Semiconductors, RTL Engineering) with summary, key capabilities, typical deliverables, and engagement model teaser; reference the generated icon set at frontend/public/assets/generated/glitchip-service-icons.dim_512x512.png and ensure consistent card styling. Use shadcn-ui components (e.g., Card, Badge) to standardize presentation; verify the component's usage instructions before implementing."
-        }
-      ]
-    },
-    {
-      "id": "REQ-6",
-      "summary": "Create Products page with the exact placeholder message and a future-ready product card area.",
-      "acceptanceCriteria": [
-        "Products page displays the exact text \"Stay Tuned for the product\" prominently.",
-        "Layout includes a clearly defined area for future product entries (empty state)."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/ProductsPage.tsx",
-          "operation": "modify",
-          "description": "Implement a clean layout that prominently displays the exact message \"Stay Tuned for the product\" and includes a styled empty-state grid/area for future product cards. Use shadcn-ui components (e.g., Card) for the empty-state container; verify the component's usage instructions before implementing."
-        }
-      ]
-    },
-    {
-      "id": "REQ-7",
-      "summary": "Create Why Us page with strong VLSI value propositions and a proof-style process/quality/engagement/tooling hierarchy.",
-      "acceptanceCriteria": [
-        "Why Us page includes multiple differentiators presented as a structured set of sections/cards.",
-        "Page includes at least one diagram-like or timeline/process visual section (static, non-interactive acceptable)."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/WhyUsPage.tsx",
-          "operation": "modify",
-          "description": "Implement differentiator sections (quality/signoff rigor, turnaround, security, domain expertise, scalable teams, tooling familiarity) with clear hierarchy; include a static process/timeline style section and reference frontend/public/assets/generated/glitchip-whyus-illustration.dim_1600x900.png and/or frontend/public/assets/generated/glitchip-circuit-pattern.dim_2048x2048.png. Use shadcn-ui components (e.g., Card, Accordion) for readable structure; verify the component's usage instructions before implementing."
-        }
-      ]
-    },
-    {
-      "id": "REQ-8",
-      "summary": "Build Careers UI: jobs list + job detail + apply flow; display required fields and persist applications via backend calls.",
-      "acceptanceCriteria": [
-        "Careers page shows a list of jobs and allows selecting a job to view full details.",
-        "Job detail view displays Job Description, Responsibilities, Pay, and Job ID fields.",
-        "An \"Apply\" action opens an application form tied to the selected Job ID.",
-        "Submitting an application returns a visible success state and the submission is persisted server-side."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/hooks/useJobs.ts",
-          "operation": "create",
-          "description": "Add React Query hooks for fetching the jobs list and fetching a job by Job ID using the existing backend actor (getAllJobs, getJobById). Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/hooks/useJobApplication.ts",
-          "operation": "create",
-          "description": "Add a React Query mutation hook to submit a job application using the existing backend actor (addJobApplication) and expose loading/success/error state for UI. Verify the component's usage instructions before implementing."
+          "description": "Harden useGetAllJobs against actor readiness issues: avoid returning an immediate empty array when the actor is unavailable, ensure the query is properly gated by actor availability, and surface error states (including console logging) so failures do not render as a blank jobs section."
         },
         {
           "path": "frontend/src/pages/CareersPage.tsx",
           "operation": "modify",
-          "description": "Implement the unique modern Careers interface: jobs list, selectable job detail panel/view, and an application form bound to the selected Job ID. Ensure job details render Job Description, Responsibilities, Pay, and Job ID; show a success state after submit and handle errors gracefully. Use shadcn-ui components (e.g., Tabs/Accordion, Dialog/Drawer, Form inputs, Button, Card) to build the UI; verify the component's usage instructions before implementing. Reference frontend/public/assets/generated/glitchip-careers-illustration.dim_1600x900.png as a page visual."
+          "description": "Update the Jobs section rendering to handle all states explicitly: show a loading UI while the jobs query is pending, show a visible error block/message when the query fails (and ensure the error is logged), and show an explicit empty-state message when jobs resolve to an empty list; prevent the current silent blank render when jobs is undefined or empty."
         }
       ]
     },
     {
-      "id": "REQ-10",
-      "summary": "Add Contact page with form + contact info section; persist submissions via backend calls with a success state.",
+      "id": "REQ-32",
+      "summary": "Display the structured experience range field for each job on the Careers job cards and inside the apply dialog/job detail header.",
       "acceptanceCriteria": [
-        "Contact page includes a working form and a separate static contact info section.",
-        "Submitting the form shows a success state and persists to the backend.",
-        "Backend exposes a method to list contact submissions (admin/dev use)."
+        "Backend JobPosting includes a dedicated experience field (or equivalent structured representation) that can represent “0–5 years”.",
+        "Careers job cards show the experience range for each job.",
+        "The apply dialog/job detail view also shows the experience range for the selected job.",
+        "Existing job listing and job lookup endpoints continue to work with the updated JobPosting shape."
       ],
       "file_operations": [
-        {
-          "path": "frontend/src/hooks/useContactForm.ts",
-          "operation": "create",
-          "description": "Add a React Query mutation hook to submit the contact form via the existing backend actor (submitContactForm) and expose loading/success/error state for UI. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/pages/ContactPage.tsx",
-          "operation": "modify",
-          "description": "Implement contact form fields (name, email, company, message) with client-side validation and a visible success state; render a separate static company contact section (email/phone/address placeholders) using backend-provided contacts if available. Use shadcn-ui components (e.g., Input/Textarea, Button, Card, Alert) for consistent styling; verify the component's usage instructions before implementing."
-        }
-      ]
-    },
-    {
-      "id": "REQ-11",
-      "summary": "Implement smooth page transitions and section reveal animations with reduced-motion support.",
-      "acceptanceCriteria": [
-        "Route/page transitions are visible between major pages.",
-        "Animations do not trigger excessive layout shift and remain smooth on mobile.",
-        "When the user prefers reduced motion, animations are minimized/disabled."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/hooks/usePrefersReducedMotion.ts",
-          "operation": "create",
-          "description": "Create a small hook to detect prefers-reduced-motion and expose a boolean for motion-safe behavior. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/components/PageTransition.tsx",
-          "operation": "create",
-          "description": "Create a route-level transition wrapper that animates page entry/exit in a performance-friendly way and respects reduced motion. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/components/SectionReveal.tsx",
-          "operation": "create",
-          "description": "Create a lightweight section reveal wrapper (e.g., intersection-based or CSS-driven) that avoids layout shift and respects reduced motion. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Wrap routed pages with PageTransition and ensure SectionReveal is used across major sections (Home/Services/Why Us/Careers) without impacting accessibility. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/index.css",
-          "operation": "create",
-          "description": "Add global motion-safe and reduced-motion CSS rules (e.g., disabling non-essential animations) and ensure transitions do not cause excessive layout shift."
-        }
-      ]
-    },
-    {
-      "id": "REQ-12",
-      "summary": "Add a coherent distinctive visual theme (palette, typography, spacing, components) consistent across site and aligned to VLSI brand.",
-      "acceptanceCriteria": [
-        "Typography scale, spacing, and component styling are consistent across pages.",
-        "Theme is clearly distinct (not default component styling) and uses a restrained, professional palette that complements the provided logo.",
-        "Buttons, links, cards, and section headers share consistent styling rules."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/index.css",
-          "operation": "modify",
-          "description": "Define the site theme via CSS variables and Tailwind base styling (professional restrained palette complementing the logo, consistent typography scale and spacing). Avoid generic default blue/purple-heavy styling."
-        },
-        {
-          "path": "frontend/tailwind.config.js",
-          "operation": "modify",
-          "description": "Extend Tailwind theme tokens (colors, shadows, radii) to support the Glitchip brand palette and consistent components while preserving existing shadcn-ui variable-based setup."
-        },
-        {
-          "path": "frontend/src/components/MarketingLayout.tsx",
-          "operation": "modify",
-          "description": "Apply consistent section spacing, max-widths, and background treatments (including optional pattern usage) across all pages through the shared layout. Verify the component's usage instructions before implementing."
-        }
-      ]
-    },
-    {
-      "id": "REQ-13",
-      "summary": "Generate and use static VLSI-themed assets from frontend/public/assets/generated across key pages.",
-      "acceptanceCriteria": [
-        "All required generated images are present under frontend/public/assets/generated and referenced directly by the frontend.",
-        "At least one generated asset is used on each of: Home, Services, Why Us, and Careers pages.",
-        "Assets are optimized (reasonable file sizes) and render crisply on retina displays."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/public/assets/generated/glitchip-hero.dim_1920x1080.png",
-          "operation": "create",
-          "description": "Add the generated hero illustration asset as a static file for use on the Home page."
-        },
-        {
-          "path": "frontend/public/assets/generated/glitchip-service-icons.dim_512x512.png",
-          "operation": "create",
-          "description": "Add the generated service icon set asset as a static file for use on the Services page."
-        },
-        {
-          "path": "frontend/public/assets/generated/glitchip-circuit-pattern.dim_2048x2048.png",
-          "operation": "create",
-          "description": "Add the generated circuit pattern background asset as a static file for use across multiple sections/pages."
-        },
-        {
-          "path": "frontend/public/assets/generated/glitchip-careers-illustration.dim_1600x900.png",
-          "operation": "create",
-          "description": "Add the generated careers illustration asset as a static file for use on the Careers page."
-        },
-        {
-          "path": "frontend/public/assets/generated/glitchip-whyus-illustration.dim_1600x900.png",
-          "operation": "create",
-          "description": "Add the generated Why Us illustration asset as a static file for use on the Why Us page."
-        },
-        {
-          "path": "frontend/src/pages/HomePage.tsx",
-          "operation": "modify",
-          "description": "Reference frontend/public/assets/generated/glitchip-hero.dim_1920x1080.png and frontend/public/assets/generated/glitchip-circuit-pattern.dim_2048x2048.png in the Home layout (e.g., hero + section background). Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/pages/ServicesPage.tsx",
-          "operation": "modify",
-          "description": "Reference frontend/public/assets/generated/glitchip-service-icons.dim_512x512.png for the five service sections. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/pages/WhyUsPage.tsx",
-          "operation": "modify",
-          "description": "Reference frontend/public/assets/generated/glitchip-whyus-illustration.dim_1600x900.png and/or frontend/public/assets/generated/glitchip-circuit-pattern.dim_2048x2048.png to support the proof/process visual hierarchy. Verify the component's usage instructions before implementing."
-        },
         {
           "path": "frontend/src/pages/CareersPage.tsx",
           "operation": "modify",
-          "description": "Reference frontend/public/assets/generated/glitchip-careers-illustration.dim_1600x900.png as a key page visual element. Verify the component's usage instructions before implementing."
+          "description": "Render JobPosting.experienceRange (minYears/maxYears) in the job card metadata and in the apply dialog header/details for the selected job, formatting it as a user-friendly range such as “0–5 years”."
+        },
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Ensure the jobs query typing/consumption aligns with the JobPosting shape that includes experienceRange so the UI can reliably read and display it."
         }
       ]
     },
     {
-      "id": "REQ-14",
-      "summary": "Prepare frontend for IC custom domain by adding /.well-known/ic-domains and project-local DNS setup documentation.",
+      "id": "REQ-33",
+      "summary": "Ensure the Careers UI correctly presents the five seeded VLSI roles by showing job ID, experience range (0–5 years), and salary range (INR 5–20 LPA) in clear user-facing text and maintaining Apply flow compatibility.",
       "acceptanceCriteria": [
-        "A /.well-known/ic-domains file exists in the frontend build output with the domain value for glitchip.in (and any specified subdomain if added later).",
-        "Project includes a short, project-local set of instructions listing the DNS record types/values that will be needed after deployment (placeholders acceptable until canister ID is known)."
+        "The backend job list contains these five roles and exposes them via getAllJobs().",
+        "Each of the five roles has a unique Job ID that is 6–7 characters and strictly alphanumeric (A–Z, 0–9).",
+        "Each of the five roles shows an experience range of 0–5 years in the UI.",
+        "Each of the five roles shows a salary range of 5–20 in the UI in clear English formatting (e.g., “INR 5–20 LPA”).",
+        "Users can click “Apply Now” and successfully submit an application against any of the five job IDs without backend validation errors."
       ],
       "file_operations": [
         {
-          "path": "frontend/public/.well-known/ic-domains",
-          "operation": "create",
-          "description": "Create the Internet Computer custom domain well-known file containing the domain value for glitchip.in so it is included in the static frontend build output."
+          "path": "frontend/src/pages/CareersPage.tsx",
+          "operation": "modify",
+          "description": "Fix salary field rendering to use the backend-provided JobPosting.salaryRange (instead of the non-existent job.salary), format it as clear text (e.g., “INR 5–20 LPA”), and ensure the job card and apply dialog display jobId, salaryRange, and experienceRange consistently for the five seeded roles."
         },
         {
-          "path": "frontend/CUSTOM_DOMAIN.md",
-          "operation": "create",
-          "description": "Document Cloudflare-managed DNS records needed to connect glitchip.in after deployment (include placeholders for canister ID / target values until known), and note where to upload/verify the domain in the IC custom domain flow."
+          "path": "frontend/src/utils/jobId.ts",
+          "operation": "modify",
+          "description": "Align job ID validation with the documented 6–7 character strictly alphanumeric (A–Z, 0–9) requirement by ensuring the regex enforces uppercase letters and digits only (no lowercase), keeping the existing error messaging behavior intact."
         }
       ]
     }

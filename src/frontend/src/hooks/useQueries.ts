@@ -8,8 +8,14 @@ export function useGetAllJobs() {
   return useQuery<JobPosting[]>({
     queryKey: ['jobs'],
     queryFn: async () => {
-      if (!actor) return [];
-      return actor.getAllJobs();
+      if (!actor) throw new Error('Actor not available');
+      try {
+        const jobs = await actor.getAllJobs();
+        return jobs;
+      } catch (error) {
+        console.error('Failed to fetch jobs:', error);
+        throw error;
+      }
     },
     enabled: !!actor && !isFetching,
   });

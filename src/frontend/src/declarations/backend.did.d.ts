@@ -16,20 +16,41 @@ export interface ContactFormSubmission {
   'company' : [] | [string],
   'message' : string,
 }
+export interface EducationEntry {
+  'startYear' : bigint,
+  'endYear' : [] | [bigint],
+  'institution' : string,
+  'degree' : string,
+  'fieldOfStudy' : string,
+}
+export interface ExperienceRange { 'maxYears' : bigint, 'minYears' : bigint }
+export type ExternalBlob = Uint8Array;
 export interface JobApplication {
-  'name' : string,
+  'resume' : [] | [ExternalBlob],
+  'country' : string,
+  'termsAccepted' : boolean,
+  'education' : Array<EducationEntry>,
   'jobId' : string,
   'email' : string,
-  'resumeLink' : string,
+  'passoutYear' : bigint,
+  'previousWorkplaces' : Array<WorkExperience>,
   'message' : [] | [string],
+  'address' : string,
+  'expectedPay' : string,
+  'currentLocation' : string,
   'phone' : string,
+  'lastName' : string,
+  'collegeUniversityName' : string,
+  'totalWorkExperience' : string,
+  'firstName' : string,
 }
 export interface JobPosting {
   'title' : string,
-  'salary' : string,
   'responsibilities' : string,
   'jobId' : string,
   'description' : string,
+  'experienceRange' : ExperienceRange,
+  'salaryRange' : string,
 }
 export interface UserProfile {
   'name' : string,
@@ -39,7 +60,40 @@ export interface UserProfile {
 export type UserRole = { 'admin' : null } |
   { 'user' : null } |
   { 'guest' : null };
+export interface WorkExperience {
+  'startYear' : bigint,
+  'endYear' : [] | [bigint],
+  'description' : string,
+  'companyName' : string,
+  'position' : string,
+}
+export interface _CaffeineStorageCreateCertificateResult {
+  'method' : string,
+  'blob_hash' : string,
+}
+export interface _CaffeineStorageRefillInformation {
+  'proposed_top_up_amount' : [] | [bigint],
+}
+export interface _CaffeineStorageRefillResult {
+  'success' : [] | [boolean],
+  'topped_up_amount' : [] | [bigint],
+}
 export interface _SERVICE {
+  '_caffeineStorageBlobIsLive' : ActorMethod<[Uint8Array], boolean>,
+  '_caffeineStorageBlobsToDelete' : ActorMethod<[], Array<Uint8Array>>,
+  '_caffeineStorageConfirmBlobDeletion' : ActorMethod<
+    [Array<Uint8Array>],
+    undefined
+  >,
+  '_caffeineStorageCreateCertificate' : ActorMethod<
+    [string],
+    _CaffeineStorageCreateCertificateResult
+  >,
+  '_caffeineStorageRefillCashier' : ActorMethod<
+    [[] | [_CaffeineStorageRefillInformation]],
+    _CaffeineStorageRefillResult
+  >,
+  '_caffeineStorageUpdateGatewayPrincipals' : ActorMethod<[], undefined>,
   '_initializeAccessControlWithSecret' : ActorMethod<[string], undefined>,
   'addJobApplication' : ActorMethod<[JobApplication], undefined>,
   'assignCallerUserRole' : ActorMethod<[Principal, UserRole], undefined>,

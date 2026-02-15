@@ -8,13 +8,50 @@
 
 import { IDL } from '@icp-sdk/core/candid';
 
+export const _CaffeineStorageCreateCertificateResult = IDL.Record({
+  'method' : IDL.Text,
+  'blob_hash' : IDL.Text,
+});
+export const _CaffeineStorageRefillInformation = IDL.Record({
+  'proposed_top_up_amount' : IDL.Opt(IDL.Nat),
+});
+export const _CaffeineStorageRefillResult = IDL.Record({
+  'success' : IDL.Opt(IDL.Bool),
+  'topped_up_amount' : IDL.Opt(IDL.Nat),
+});
+export const ExternalBlob = IDL.Vec(IDL.Nat8);
+export const EducationEntry = IDL.Record({
+  'startYear' : IDL.Nat,
+  'endYear' : IDL.Opt(IDL.Nat),
+  'institution' : IDL.Text,
+  'degree' : IDL.Text,
+  'fieldOfStudy' : IDL.Text,
+});
+export const WorkExperience = IDL.Record({
+  'startYear' : IDL.Nat,
+  'endYear' : IDL.Opt(IDL.Nat),
+  'description' : IDL.Text,
+  'companyName' : IDL.Text,
+  'position' : IDL.Text,
+});
 export const JobApplication = IDL.Record({
-  'name' : IDL.Text,
+  'resume' : IDL.Opt(ExternalBlob),
+  'country' : IDL.Text,
+  'termsAccepted' : IDL.Bool,
+  'education' : IDL.Vec(EducationEntry),
   'jobId' : IDL.Text,
   'email' : IDL.Text,
-  'resumeLink' : IDL.Text,
+  'passoutYear' : IDL.Nat,
+  'previousWorkplaces' : IDL.Vec(WorkExperience),
   'message' : IDL.Opt(IDL.Text),
+  'address' : IDL.Text,
+  'expectedPay' : IDL.Text,
+  'currentLocation' : IDL.Text,
   'phone' : IDL.Text,
+  'lastName' : IDL.Text,
+  'collegeUniversityName' : IDL.Text,
+  'totalWorkExperience' : IDL.Text,
+  'firstName' : IDL.Text,
 });
 export const UserRole = IDL.Variant({
   'admin' : IDL.Null,
@@ -27,12 +64,17 @@ export const ContactFormSubmission = IDL.Record({
   'company' : IDL.Opt(IDL.Text),
   'message' : IDL.Text,
 });
+export const ExperienceRange = IDL.Record({
+  'maxYears' : IDL.Nat,
+  'minYears' : IDL.Nat,
+});
 export const JobPosting = IDL.Record({
   'title' : IDL.Text,
-  'salary' : IDL.Text,
   'responsibilities' : IDL.Text,
   'jobId' : IDL.Text,
   'description' : IDL.Text,
+  'experienceRange' : ExperienceRange,
+  'salaryRange' : IDL.Text,
 });
 export const UserProfile = IDL.Record({
   'name' : IDL.Text,
@@ -41,6 +83,32 @@ export const UserProfile = IDL.Record({
 });
 
 export const idlService = IDL.Service({
+  '_caffeineStorageBlobIsLive' : IDL.Func(
+      [IDL.Vec(IDL.Nat8)],
+      [IDL.Bool],
+      ['query'],
+    ),
+  '_caffeineStorageBlobsToDelete' : IDL.Func(
+      [],
+      [IDL.Vec(IDL.Vec(IDL.Nat8))],
+      ['query'],
+    ),
+  '_caffeineStorageConfirmBlobDeletion' : IDL.Func(
+      [IDL.Vec(IDL.Vec(IDL.Nat8))],
+      [],
+      [],
+    ),
+  '_caffeineStorageCreateCertificate' : IDL.Func(
+      [IDL.Text],
+      [_CaffeineStorageCreateCertificateResult],
+      [],
+    ),
+  '_caffeineStorageRefillCashier' : IDL.Func(
+      [IDL.Opt(_CaffeineStorageRefillInformation)],
+      [_CaffeineStorageRefillResult],
+      [],
+    ),
+  '_caffeineStorageUpdateGatewayPrincipals' : IDL.Func([], [], []),
   '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
   'addJobApplication' : IDL.Func([JobApplication], [], []),
   'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
@@ -82,13 +150,50 @@ export const idlService = IDL.Service({
 export const idlInitArgs = [];
 
 export const idlFactory = ({ IDL }) => {
+  const _CaffeineStorageCreateCertificateResult = IDL.Record({
+    'method' : IDL.Text,
+    'blob_hash' : IDL.Text,
+  });
+  const _CaffeineStorageRefillInformation = IDL.Record({
+    'proposed_top_up_amount' : IDL.Opt(IDL.Nat),
+  });
+  const _CaffeineStorageRefillResult = IDL.Record({
+    'success' : IDL.Opt(IDL.Bool),
+    'topped_up_amount' : IDL.Opt(IDL.Nat),
+  });
+  const ExternalBlob = IDL.Vec(IDL.Nat8);
+  const EducationEntry = IDL.Record({
+    'startYear' : IDL.Nat,
+    'endYear' : IDL.Opt(IDL.Nat),
+    'institution' : IDL.Text,
+    'degree' : IDL.Text,
+    'fieldOfStudy' : IDL.Text,
+  });
+  const WorkExperience = IDL.Record({
+    'startYear' : IDL.Nat,
+    'endYear' : IDL.Opt(IDL.Nat),
+    'description' : IDL.Text,
+    'companyName' : IDL.Text,
+    'position' : IDL.Text,
+  });
   const JobApplication = IDL.Record({
-    'name' : IDL.Text,
+    'resume' : IDL.Opt(ExternalBlob),
+    'country' : IDL.Text,
+    'termsAccepted' : IDL.Bool,
+    'education' : IDL.Vec(EducationEntry),
     'jobId' : IDL.Text,
     'email' : IDL.Text,
-    'resumeLink' : IDL.Text,
+    'passoutYear' : IDL.Nat,
+    'previousWorkplaces' : IDL.Vec(WorkExperience),
     'message' : IDL.Opt(IDL.Text),
+    'address' : IDL.Text,
+    'expectedPay' : IDL.Text,
+    'currentLocation' : IDL.Text,
     'phone' : IDL.Text,
+    'lastName' : IDL.Text,
+    'collegeUniversityName' : IDL.Text,
+    'totalWorkExperience' : IDL.Text,
+    'firstName' : IDL.Text,
   });
   const UserRole = IDL.Variant({
     'admin' : IDL.Null,
@@ -101,12 +206,17 @@ export const idlFactory = ({ IDL }) => {
     'company' : IDL.Opt(IDL.Text),
     'message' : IDL.Text,
   });
+  const ExperienceRange = IDL.Record({
+    'maxYears' : IDL.Nat,
+    'minYears' : IDL.Nat,
+  });
   const JobPosting = IDL.Record({
     'title' : IDL.Text,
-    'salary' : IDL.Text,
     'responsibilities' : IDL.Text,
     'jobId' : IDL.Text,
     'description' : IDL.Text,
+    'experienceRange' : ExperienceRange,
+    'salaryRange' : IDL.Text,
   });
   const UserProfile = IDL.Record({
     'name' : IDL.Text,
@@ -115,6 +225,32 @@ export const idlFactory = ({ IDL }) => {
   });
   
   return IDL.Service({
+    '_caffeineStorageBlobIsLive' : IDL.Func(
+        [IDL.Vec(IDL.Nat8)],
+        [IDL.Bool],
+        ['query'],
+      ),
+    '_caffeineStorageBlobsToDelete' : IDL.Func(
+        [],
+        [IDL.Vec(IDL.Vec(IDL.Nat8))],
+        ['query'],
+      ),
+    '_caffeineStorageConfirmBlobDeletion' : IDL.Func(
+        [IDL.Vec(IDL.Vec(IDL.Nat8))],
+        [],
+        [],
+      ),
+    '_caffeineStorageCreateCertificate' : IDL.Func(
+        [IDL.Text],
+        [_CaffeineStorageCreateCertificateResult],
+        [],
+      ),
+    '_caffeineStorageRefillCashier' : IDL.Func(
+        [IDL.Opt(_CaffeineStorageRefillInformation)],
+        [_CaffeineStorageRefillResult],
+        [],
+      ),
+    '_caffeineStorageUpdateGatewayPrincipals' : IDL.Func([], [], []),
     '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
     'addJobApplication' : IDL.Func([JobApplication], [], []),
     'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),

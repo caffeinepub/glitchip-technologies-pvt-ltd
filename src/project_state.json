@@ -1,13 +1,23 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 3,
+  "projectStateVersion": 15,
   "summary": "Revamp and rebuild Glitchip Technologies Pvt. Ltd. marketing website with modern design, transitions/assets, key pages (Home, Services, Products, Careers, Why Us) and prepare deployment + connection to the existing GoDaddy domain.",
   "architectural_notes": [
-    "Domain connection approach: keep domain registered at GoDaddy, use Cloudflare for DNS management to point domain to the deployed site."
+    "Domain connection approach: keep domain registered at GoDaddy, use Cloudflare for DNS management to point domain to the deployed site.",
+    "Careers application flow must support resume upload (file) instead of a resume link and store/upload it in a retrievable way for admin/dev use.",
+    "Home page visual update requirement: replace the current 'inner circle' image with the provided chip image and replace the 'outer circle'/background image with the provided pink graphic; ensure the Home page layout is fully responsive and free of misalignment across device sizes.",
+    "Optimize/serve hero images in compressed form (and ideally modern formats) to avoid multi‑MB assets that cause slow loading and awkward UX; ensure updated compressed assets are the ones referenced in production.",
+    "Do not include reference/screenshot images in production assets; only use approved/compressed hero images and ensure asset selection is correct before deployment."
   ],
-  "known_issues": [],
-  "isFixRequest": false,
-  "imageRequirements": "## Required Images\n- Semiconductor chip/circuit hero illustration with abstract geometry, dark background, teal accents (glitchip-hero.dim_1920x1080.png)\n- Set of five line icons representing: Physical Design, Design Verification, DFT, AI Automation, RTL Engineering (glitchip-service-icons.dim_512x512.png)\n- Abstract circuit-board pattern background, seamless or large canvas (glitchip-circuit-pattern.dim_2048x2048.png)\n- Careers illustration showing a futuristic workstation/engineering theme (glitchip-careers-illustration.dim_1600x900.png)\n- Why Us infographic-style illustration with pillars/process motif (glitchip-whyus-illustration.dim_1600x900.png)",
+  "known_issues": [
+    "Home page hero/circle graphics need to be updated with newly provided images and re-optimized to prevent responsive misalignment across devices.",
+    "User reports the provided Home page hero images are not loading/appearing on the live site; needs recheck and fix (likely asset path/hosting/build issue).",
+    "Home hero images are too large (3–5MB) causing delayed loading and awkward first impression; need to swap to compressed versions.",
+    "Home hero chip image edges don’t blend into the background cleanly; needs a subtle blend/feather effect.",
+    "A reference screenshot image was mistakenly added/used as a site asset in the deployed build; must be replaced with an appropriate/approved image immediately.",
+    "Careers pages are not showing/listing jobs after a recent update; investigate jobs list retrieval/rendering and fix regression."
+  ],
+  "isFixRequest": true,
   "existing_features": [
     {
       "id": "feature-create-a-full-multi-page-marketing-website-for-glitchip-technologies-pvt-ltd-with-the-following-top-level-pages-and-routes-home-services-services-why-us-why-us-products-products-careers-careers-and-contact-contact",
@@ -112,6 +122,150 @@
         "REQ-14"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-update-job-posting-job-id-format-to-be-6-7-alphanumeric-characters-a-z-0-9-and-display-the-job-id-more-prominently-on-the-careers-page-job-card-and-application-dialog",
+      "title": "Update job posting Job ID format to be 6–7 alphanumeric characters (A–Z, 0–9) and display the Job ID more prominently on the Careers page (job card and application dialog).",
+      "reqIds": [
+        "REQ-15"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-replace-the-careers-application-form-resume-link-field-with-a-resume-file-upload-field-and-persist-the-uploaded-resume-content-with-the-job-application-in-the-backend",
+      "title": "Replace the Careers application form 'Resume Link' field with a resume file upload field and persist the uploaded resume content with the job application in the backend.",
+      "reqIds": [
+        "REQ-16"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-expand-the-careers-application-form-to-collect-and-submit-the-additional-candidate-details-first-name-last-name-country-address-current-location-expected-pay-college-university-name-passout-year-previous-workplace-details-and-total-work-experience",
+      "title": "Expand the Careers application form to collect and submit the additional candidate details: First Name, Last Name, Country, Address, Current Location, Expected Pay, College/University Name, Passout Year, Previous Workplace details, and Total Work Experience.",
+      "reqIds": [
+        "REQ-17"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-scalable-education-section-to-the-careers-application-form-that-supports-adding-and-removing-multiple-education-entries-and-persist-them-with-the-job-application",
+      "title": "Add a scalable Education section to the Careers application form that supports adding and removing multiple education entries, and persist them with the job application.",
+      "reqIds": [
+        "REQ-18"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-dedicated-terms-conditions-page-route-and-require-applicants-to-accept-terms-conditions-via-a-checkbox-in-the-careers-application-form-with-an-embedded-link-to-the-terms-conditions-page",
+      "title": "Add a dedicated Terms & Conditions page/route and require applicants to accept Terms & Conditions via a checkbox in the Careers application form with an embedded link to the Terms & Conditions page.",
+      "reqIds": [
+        "REQ-19"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-backend-api-and-frontend-types-hooks-to-reflect-the-new-jobapplication-shape-resume-upload-expanded-fields-education-array-terms-acceptance-and-ensure-admin-dev-retrieval-of-applications-still-works",
+      "title": "Update the backend API and frontend types/hooks to reflect the new JobApplication shape (resume upload + expanded fields + education array + terms acceptance), and ensure admin/dev retrieval of applications still works.",
+      "reqIds": [
+        "REQ-20"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-home-page-hero-section-to-use-the-user-provided-images-1-replace-the-current-hero-visual-image-assets-generated-glitchip-hero-dim-1920x1080-png-with-the-uploaded-chip-image-vecteezy-close-up-of-a-central-processing-unit-cpu-microchip-71458675-jpg-jpeg-and-2-replace-the-current-hero-background-pattern-image-assets-generated-glitchip-circuit-pattern-dim-2048x2048-png-with-the-uploaded-pink-graphic-image-pexels-tuesday-temptation-190692-1551441-jpg-jpeg",
+      "title": "Update the Home page hero section to use the user-provided images: (1) replace the current hero visual image \"/assets/generated/glitchip-hero.dim_1920x1080.png\" with the uploaded chip image \"vecteezy_close-up-of-a-central-processing-unit-cpu-microchip_71458675.jpg.jpeg\"; and (2) replace the current hero background pattern image \"/assets/generated/glitchip-circuit-pattern.dim_2048x2048.png\" with the uploaded pink graphic image \"pexels-tuesday-temptation-190692-1551441.jpg.jpeg\".",
+      "reqIds": [
+        "REQ-22"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-fix-and-optimize-the-home-page-hero-layout-to-be-responsive-and-free-of-misalignment-across-devices-after-the-image-swap-mobile-tablet-desktop-and-large-desktop-ensuring-the-hero-text-ctas-and-hero-image-remain-correctly-aligned-and-do-not-overflow-or-awkwardly-crop",
+      "title": "Fix and optimize the Home page hero layout to be responsive and free of misalignment across devices after the image swap (mobile, tablet, desktop, and large desktop), ensuring the hero text/CTAs and hero image remain correctly aligned and do not overflow or awkwardly crop.",
+      "reqIds": [
+        "REQ-23"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-fix-the-home-page-hero-images-so-they-reliably-load-in-production-and-development-by-ensuring-the-referenced-files-exist-under-the-frontend-static-public-directory-and-the-img-src-paths-match-the-deployed-asset-paths-specifically-verify-the-hero-background-image-and-hero-visual-image-referenced-in-frontend-src-pages-homepage-tsx-and-correct-either-a-the-file-locations-under-frontend-public-or-b-the-code-paths-so-the-browser-no-longer-requests-missing-urls",
+      "title": "Fix the Home page hero images so they reliably load in production and development by ensuring the referenced files exist under the frontend static public directory and the <img src> paths match the deployed asset paths. Specifically verify the hero background image and hero visual image referenced in frontend/src/pages/HomePage.tsx and correct either (a) the file locations under frontend/public or (b) the code paths so the browser no longer requests missing URLs.",
+      "reqIds": [
+        "REQ-24"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-graceful-image-failure-handling-for-the-home-page-hero-images-so-that-if-an-image-fails-to-load-the-ui-does-not-show-a-broken-image-icon-use-a-lightweight-fallback-e-g-hide-the-failed-img-and-show-a-styled-placeholder-block-gradient-while-keeping-accessibility-intact-decorative-images-should-remain-empty-alt-meaningful-images-keep-a-descriptive-alt",
+      "title": "Add graceful image-failure handling for the Home page hero images so that if an image fails to load, the UI does not show a broken image icon. Use a lightweight fallback (e.g., hide the failed <img> and show a styled placeholder block/gradient) while keeping accessibility intact (decorative images should remain empty alt; meaningful images keep a descriptive alt).",
+      "reqIds": [
+        "REQ-25"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-replace-the-home-page-hero-background-and-chip-images-with-the-newly-uploaded-compressed-images-to-reduce-loading-delay-and-avoid-an-awkward-first-impression-ensure-the-selected-image-files-are-placed-under-the-frontend-static-directory-frontend-public-and-that-the-referenced-src-paths-in-frontend-src-pages-homepage-tsx-match-the-deployed-asset-paths-so-the-browser-does-not-request-missing-urls",
+      "title": "Replace the Home page hero background and chip images with the newly uploaded compressed images to reduce loading delay and avoid an awkward first impression. Ensure the selected image files are placed under the frontend static directory (frontend/public) and that the referenced src paths in frontend/src/pages/HomePage.tsx match the deployed asset paths so the browser does not request missing URLs.",
+      "reqIds": [
+        "REQ-26"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-subtle-blend-feather-effect-to-the-home-page-hero-chip-image-so-it-merges-more-cleanly-into-the-surrounding-hero-environment-while-preserving-responsiveness-and-not-degrading-text-readability-implement-the-effect-via-css-styling-applied-to-the-chip-image-container-image-in-frontend-src-pages-homepage-tsx-e-g-a-soft-edge-fade-mask-and-or-a-gentle-blend-overlay-without-removing-the-existing-rounded-overflow-layout-or-safeimage-usage",
+      "title": "Add a subtle blend/feather effect to the Home page hero chip image so it merges more cleanly into the surrounding hero environment while preserving responsiveness and not degrading text readability. Implement the effect via CSS/styling applied to the chip image container/image in frontend/src/pages/HomePage.tsx (e.g., a soft edge fade/mask and/or a gentle blend overlay), without removing the existing rounded/overflow layout or SafeImage usage.",
+      "reqIds": [
+        "REQ-27"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-remove-the-mistakenly-added-reference-screenshot-image-uploaded-as-image-3-png-from-any-user-facing-usage-across-the-site-and-ensure-it-is-not-referenced-by-any-img-or-css-background-in-the-frontend",
+      "title": "Remove the mistakenly added reference screenshot image (uploaded as image-3.png) from any user-facing usage across the site, and ensure it is not referenced by any <img> or CSS background in the frontend.",
+      "reqIds": [
+        "REQ-28"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-home-page-hero-visuals-to-use-appropriate-semiconductor-themed-images-instead-of-the-current-generic-placeholders-assets-image-1-png-and-assets-image-2-png-and-ensure-the-new-files-are-served-from-frontend-public-static-assets-with-correct-public-paths",
+      "title": "Update the Home page hero visuals to use appropriate semiconductor-themed images instead of the current generic placeholders (/assets/image-1.png and /assets/image-2.png), and ensure the new files are served from frontend/public (static assets) with correct public paths.",
+      "reqIds": [
+        "REQ-29"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-the-replacement-hero-images-as-static-files-under-frontend-public-assets-generated-and-wire-them-into-the-home-page-hero-background-layer-and-main-hero-visual-with-responsive-object-fit-settings-consistent-with-the-existing-layout",
+      "title": "Add the replacement hero images as static files under frontend/public/assets/generated and wire them into the Home page hero (background layer and main hero visual) with responsive object-fit settings consistent with the existing layout.",
+      "reqIds": [
+        "REQ-30"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-fix-the-regression-causing-the-careers-page-jobs-list-to-show-no-jobs-after-the-recent-update-by-identifying-whether-the-failure-is-due-to-react-query-actor-readiness-a-failed-backend-call-or-a-rendering-empty-state-bug-and-update-the-frontend-and-or-backend-so-job-postings-reliably-appear-on-careers",
+      "title": "Fix the regression causing the Careers page jobs list to show no jobs after the recent update by identifying whether the failure is due to React Query/actor readiness, a failed backend call, or a rendering/empty-state bug, and update the frontend and/or backend so job postings reliably appear on /careers.",
+      "reqIds": [
+        "REQ-31"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-support-for-an-explicit-experience-range-to-job-postings-0-5-years-for-the-new-roles-by-extending-the-jobposting-data-model-and-ensuring-the-careers-ui-displays-this-experience-range-on-the-job-cards-and-in-the-apply-dialog-job-detail-view",
+      "title": "Add support for an explicit experience range to job postings (0–5 years for the new roles) by extending the JobPosting data model and ensuring the Careers UI displays this experience range on the job cards and in the apply dialog/job detail view.",
+      "reqIds": [
+        "REQ-32"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-seeded-available-job-postings-to-include-exactly-these-five-roles-physical-design-engineer-design-engineer-design-verification-engineer-dft-engineer-ai-automation-engineer-each-role-must-use-an-experience-range-of-0-5-years-and-a-salary-range-of-5-20-expressed-clearly-in-user-facing-text-e-g-inr-5-20-lpa-and-each-must-have-an-appropriate-unique-job-id-that-matches-the-existing-6-7-character-alphanumeric-a-z-0-9-format-requirement",
+      "title": "Update the seeded/available job postings to include exactly these five roles: Physical Design Engineer, Design Engineer, Design Verification Engineer, DFT Engineer, AI Automation Engineer. Each role must use an experience range of 0–5 years and a salary range of 5–20 (expressed clearly in user-facing text, e.g., “INR 5–20 LPA”), and each must have an appropriate unique Job ID that matches the existing 6–7 character alphanumeric (A–Z, 0–9) format requirement.",
+      "reqIds": [
+        "REQ-33"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -181,6 +335,44 @@
       "reqIds": [
         "REQ-9"
       ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-20",
+      "summary": "Update Careers job/application requirements: Job ID should be 6–7 alphanumeric characters and displayed more prominently; replace resume link field with resume upload option; expand application form to include First Name, Last Name, Country, Address, Current Location, Expected Pay, Education details (College/University + passout year and scalable/addable education entries), Previous Workplace details, and Total Work Experience.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-21",
+      "summary": "Add a dedicated Terms & Conditions page/route and include a required Terms & Conditions checkbox in the Careers application form with a separate embedded link to the Terms & Conditions page.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-28",
+      "summary": "If the canister currently has persisted job applications using the old schema (including resumeLink), add a conditional Motoko state migration to preserve existing data on upgrade.",
+      "reqIds": [
+        "REQ-21"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-29",
+      "summary": "Replace Home hero images with newly provided compressed versions to reduce load delay and improve perceived performance",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-30",
+      "summary": "Add subtle blend/feather effect to the Home hero chip image so it merges cleanly with the background environment",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-31",
+      "summary": "Add new Careers job postings: Physical Design Engineer, Design Engineer, Design Verification Engineer, DFT Engineer, AI Automation Engineer; each with 0–5 years experience range, 5–20 salary range, and appropriate 6–7 character alphanumeric Job IDs.",
+      "reqIds": [],
       "status": "pending"
     }
   ],

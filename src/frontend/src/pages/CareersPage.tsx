@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   Dialog,
   DialogContent,
@@ -13,43 +14,258 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import SectionReveal from '../components/SectionReveal';
 import { useGetAllJobs, useSubmitJobApplication } from '../hooks/useQueries';
-import { Briefcase, MapPin, DollarSign, FileText, Loader2 } from 'lucide-react';
+import { Loader2, Plus, X, AlertCircle, Briefcase } from 'lucide-react';
 import { toast } from 'sonner';
-import type { JobPosting } from '../backend';
+import { Link } from '@tanstack/react-router';
+import type { JobPosting, EducationEntry, WorkExperience } from '../backend';
+import { ExternalBlob } from '../backend';
+import { isValidJobId } from '../utils/jobId';
+
+interface EducationFormEntry {
+  institution: string;
+  degree: string;
+  fieldOfStudy: string;
+  startYear: string;
+  endYear: string;
+}
+
+interface WorkExperienceFormEntry {
+  companyName: string;
+  position: string;
+  startYear: string;
+  endYear: string;
+  description: string;
+}
 
 export default function CareersPage() {
-  const { data: jobs, isLoading } = useGetAllJobs();
+  const { data: jobs, isLoading, isError, error } = useGetAllJobs();
   const [selectedJob, setSelectedJob] = useState<JobPosting | null>(null);
   const [isApplyDialogOpen, setIsApplyDialogOpen] = useState(false);
   const submitApplication = useSubmitJobApplication();
 
   const [formData, setFormData] = useState({
-    name: '',
+    firstName: '',
+    lastName: '',
     email: '',
     phone: '',
-    resumeLink: '',
+    country: '',
+    address: '',
+    currentLocation: '',
+    expectedPay: '',
+    collegeUniversityName: '',
+    passoutYear: '',
+    totalWorkExperience: '',
     message: '',
+    termsAccepted: false,
   });
+
+  const [resumeFile, setResumeFile] = useState<File | null>(null);
+  const [uploadProgress, setUploadProgress] = useState(0);
+
+  const [education, setEducation] = useState<EducationFormEntry[]>([
+    {
+      institution: '',
+      degree: '',
+      fieldOfStudy: '',
+      startYear: '',
+      endYear: '',
+    },
+  ]);
+
+  const [workExperience, setWorkExperience] = useState<WorkExperienceFormEntry[]>([
+    {
+      companyName: '',
+      position: '',
+      startYear: '',
+      endYear: '',
+      description: '',
+    },
+  ]);
 
   const handleApply = (job: JobPosting) => {
     setSelectedJob(job);
     setIsApplyDialogOpen(true);
   };
 
+  const handleAddEducation = () => {
+    setEducation([
+      ...education,
+      {
+        institution: '',
+        degree: '',
+        fieldOfStudy: '',
+        startYear: '',
+        endYear: '',
+      },
+    ]);
+  };
+
+  const handleRemoveEducation = (index: number) => {
+    if (education.length > 1) {
+      setEducation(education.filter((_, i) => i !== index));
+    }
+  };
+
+  const handleEducationChange = (index: number, field: keyof EducationFormEntry, value: string) => {
+    const newEducation = [...education];
+    newEducation[index][field] = value;
+    setEducation(newEducation);
+  };
+
+  const handleAddWorkExperience = () => {
+    setWorkExperience([
+      ...workExperience,
+      {
+        companyName: '',
+        position: '',
+        startYear: '',
+        endYear: '',
+        description: '',
+      },
+    ]);
+  };
+
+  const handleRemoveWorkExperience = (index: number) => {
+    if (workExperience.length > 1) {
+      setWorkExperience(workExperience.filter((_, i) => i !== index));
+    }
+  };
+
+  const handleWorkExperienceChange = (
+    index: number,
+    field: keyof WorkExperienceFormEntry,
+    value: string
+  ) => {
+    const newWorkExperience = [...workExperience];
+    newWorkExperience[index][field] = value;
+    setWorkExperience(newWorkExperience);
+  };
+
+  const handleResumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setResumeFile(file);
+    }
+  };
+
+  const resetForm = () => {
+    setFormData({
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      country: '',
+      address: '',
+      currentLocation: '',
+      expectedPay: '',
+      collegeUniversityName: '',
+      passoutYear: '',
+      totalWorkExperience: '',
+      message: '',
+      termsAccepted: false,
+    });
+    setResumeFile(null);
+    setUploadProgress(0);
+    setEducation([
+      {
+        institution: '',
+        degree: '',
+        fieldOfStudy: '',
+        startYear: '',
+        endYear: '',
+      },
+    ]);
+    setWorkExperience([
+      {
+        companyName: '',
+        position: '',
+        startYear: '',
+        endYear: '',
+        description: '',
+      },
+    ]);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedJob) return;
 
+    // Validate job ID
+    if (!isValidJobId(selectedJob.jobId)) {
+      toast.error('Invalid Job ID', {
+        description: 'The job ID format is invalid. Please contact support.',
+      });
+      return;
+    }
+
+    // Validate resume file
+    if (!resumeFile) {
+      toast.error('Resume Required', {
+        description: 'Please upload your resume to continue.',
+      });
+      return;
+    }
+
+    // Validate terms acceptance
+    if (!formData.termsAccepted) {
+      toast.error('Terms and Conditions', {
+        description: 'Please accept the terms and conditions to continue.',
+      });
+      return;
+    }
+
     try {
+      // Convert resume file to bytes
+      const resumeBytes = await resumeFile.arrayBuffer();
+      const resumeBlob = ExternalBlob.fromBytes(new Uint8Array(resumeBytes)).withUploadProgress(
+        (percentage) => {
+          setUploadProgress(percentage);
+        }
+      );
+
+      // Convert education entries
+      const educationEntries: EducationEntry[] = education
+        .filter((edu) => edu.institution && edu.degree && edu.startYear)
+        .map((edu) => ({
+          institution: edu.institution,
+          degree: edu.degree,
+          fieldOfStudy: edu.fieldOfStudy,
+          startYear: BigInt(parseInt(edu.startYear) || 0),
+          endYear: edu.endYear ? BigInt(parseInt(edu.endYear)) : undefined,
+        }));
+
+      // Convert work experience entries
+      const workExperienceEntries: WorkExperience[] = workExperience
+        .filter((work) => work.companyName && work.position && work.startYear)
+        .map((work) => ({
+          companyName: work.companyName,
+          position: work.position,
+          startYear: BigInt(parseInt(work.startYear) || 0),
+          endYear: work.endYear ? BigInt(parseInt(work.endYear)) : undefined,
+          description: work.description,
+        }));
+
       await submitApplication.mutateAsync({
         jobId: selectedJob.jobId,
-        name: formData.name,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
         email: formData.email,
         phone: formData.phone,
-        resumeLink: formData.resumeLink,
+        country: formData.country,
+        address: formData.address,
+        currentLocation: formData.currentLocation,
+        expectedPay: formData.expectedPay,
+        collegeUniversityName: formData.collegeUniversityName,
+        passoutYear: BigInt(parseInt(formData.passoutYear) || 0),
+        totalWorkExperience: formData.totalWorkExperience,
+        education: educationEntries,
+        previousWorkplaces: workExperienceEntries,
+        resume: resumeBlob,
         message: formData.message || undefined,
+        termsAccepted: formData.termsAccepted,
       });
 
       toast.success('Application submitted successfully!', {
@@ -57,14 +273,9 @@ export default function CareersPage() {
       });
 
       setIsApplyDialogOpen(false);
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        resumeLink: '',
-        message: '',
-      });
+      resetForm();
     } catch (error) {
+      console.error('Application submission error:', error);
       toast.error('Failed to submit application', {
         description: 'Please try again or contact us directly.',
       });
@@ -124,18 +335,52 @@ export default function CareersPage() {
           </SectionReveal>
 
           {isLoading ? (
-            <div className="flex justify-center py-12">
+            <div className="flex flex-col items-center justify-center py-12 space-y-4">
               <Loader2 className="h-8 w-8 animate-spin text-cyan-500" />
+              <p className="text-muted-foreground">Loading job openings...</p>
+            </div>
+          ) : isError ? (
+            <div className="max-w-2xl mx-auto">
+              <Alert variant="destructive">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Error Loading Jobs</AlertTitle>
+                <AlertDescription>
+                  We couldn't load the job listings at this time. Please try refreshing the page or
+                  contact us directly at contact@glitchip.in.
+                  {error && (
+                    <div className="mt-2 text-xs opacity-75">
+                      Error details: {error instanceof Error ? error.message : 'Unknown error'}
+                    </div>
+                  )}
+                </AlertDescription>
+              </Alert>
+            </div>
+          ) : !jobs || jobs.length === 0 ? (
+            <div className="max-w-2xl mx-auto">
+              <Alert>
+                <Briefcase className="h-4 w-4" />
+                <AlertTitle>No Open Positions</AlertTitle>
+                <AlertDescription>
+                  We don't have any open positions at the moment. Please check back soon or reach
+                  out to us at contact@glitchip.in to express your interest in future
+                  opportunities.
+                </AlertDescription>
+              </Alert>
             </div>
           ) : (
             <div className="grid md:grid-cols-2 gap-6 max-w-6xl mx-auto">
-              {jobs?.map((job) => (
+              {jobs.map((job) => (
                 <SectionReveal key={job.jobId}>
                   <Card className="h-full hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
                     <CardHeader>
-                      <div className="flex items-start justify-between mb-2">
+                      <div className="flex items-start justify-between mb-3">
                         <CardTitle className="text-2xl">{job.title}</CardTitle>
-                        <Badge variant="secondary">Job ID: {job.jobId}</Badge>
+                        <Badge
+                          variant="default"
+                          className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white border-0 text-base font-bold px-3 py-1"
+                        >
+                          {job.jobId}
+                        </Badge>
                       </div>
                       <CardDescription className="text-base">
                         {job.description}
@@ -143,20 +388,29 @@ export default function CareersPage() {
                     </CardHeader>
                     <CardContent>
                       <div className="space-y-4">
-                        <div>
-                          <div className="flex items-center text-sm text-muted-foreground mb-2">
-                            <DollarSign className="h-4 w-4 mr-2" />
-                            <span className="font-semibold">Salary:</span>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <p className="text-sm font-semibold text-muted-foreground mb-1">
+                              Experience
+                            </p>
+                            <p className="text-base font-medium">
+                              {Number(job.experienceRange.minYears)}–
+                              {Number(job.experienceRange.maxYears)} years
+                            </p>
                           </div>
-                          <p className="text-sm ml-6">{job.salary}</p>
+                          <div>
+                            <p className="text-sm font-semibold text-muted-foreground mb-1">
+                              Salary Range
+                            </p>
+                            <p className="text-base font-medium">{job.salaryRange}</p>
+                          </div>
                         </div>
 
                         <div>
-                          <div className="flex items-center text-sm text-muted-foreground mb-2">
-                            <FileText className="h-4 w-4 mr-2" />
-                            <span className="font-semibold">Key Responsibilities:</span>
-                          </div>
-                          <p className="text-sm ml-6 text-muted-foreground">
+                          <p className="text-sm font-semibold text-muted-foreground mb-1">
+                            Key Responsibilities
+                          </p>
+                          <p className="text-sm text-muted-foreground">
                             {job.responsibilities}
                           </p>
                         </div>
@@ -179,89 +433,488 @@ export default function CareersPage() {
 
       {/* Application Dialog */}
       <Dialog open={isApplyDialogOpen} onOpenChange={setIsApplyDialogOpen}>
-        <DialogContent className="max-w-2xl max-h-[90vh]">
+        <DialogContent className="max-w-3xl max-h-[90vh]">
           <DialogHeader>
-            <DialogTitle>Apply for {selectedJob?.title}</DialogTitle>
-            <DialogDescription>
-              Job ID: {selectedJob?.jobId} | Fill out the form below to submit your
-              application
+            <DialogTitle className="text-2xl">Apply for {selectedJob?.title}</DialogTitle>
+            <DialogDescription className="text-base space-y-1">
+              <div>
+                <span className="font-semibold">Job ID: {selectedJob?.jobId}</span>
+              </div>
+              {selectedJob && (
+                <div className="flex gap-4 text-sm">
+                  <span>
+                    Experience: {Number(selectedJob.experienceRange.minYears)}–
+                    {Number(selectedJob.experienceRange.maxYears)} years
+                  </span>
+                  <span>•</span>
+                  <span>Salary: {selectedJob.salaryRange}</span>
+                </div>
+              )}
+              <div className="pt-1">Fill out the form below to submit your application</div>
             </DialogDescription>
           </DialogHeader>
-          <ScrollArea className="max-h-[60vh] pr-4">
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <Label htmlFor="name">Full Name *</Label>
-                <Input
-                  id="name"
-                  required
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  placeholder="John Doe"
-                />
+          <ScrollArea className="max-h-[calc(90vh-180px)] pr-4">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Personal Information */}
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold border-b pb-2">Personal Information</h3>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="firstName">First Name *</Label>
+                    <Input
+                      id="firstName"
+                      required
+                      value={formData.firstName}
+                      onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                      placeholder="John"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="lastName">Last Name *</Label>
+                    <Input
+                      id="lastName"
+                      required
+                      value={formData.lastName}
+                      onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                      placeholder="Doe"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="email">Email *</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      required
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      placeholder="john@example.com"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="phone">Phone Number *</Label>
+                    <Input
+                      id="phone"
+                      type="tel"
+                      required
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      placeholder="+91 99999 99999"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <Label htmlFor="country">Country *</Label>
+                  <Input
+                    id="country"
+                    required
+                    value={formData.country}
+                    onChange={(e) => setFormData({ ...formData, country: e.target.value })}
+                    placeholder="India"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="address">Address *</Label>
+                  <Input
+                    id="address"
+                    required
+                    value={formData.address}
+                    onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                    placeholder="123 Main Street, City, State, ZIP"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="currentLocation">Current Location *</Label>
+                  <Input
+                    id="currentLocation"
+                    required
+                    value={formData.currentLocation}
+                    onChange={(e) =>
+                      setFormData({ ...formData, currentLocation: e.target.value })
+                    }
+                    placeholder="Bengaluru, India"
+                  />
+                </div>
               </div>
 
-              <div>
-                <Label htmlFor="email">Email *</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  required
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  placeholder="john@example.com"
-                />
+              {/* Education */}
+              <div className="space-y-4">
+                <div className="flex items-center justify-between border-b pb-2">
+                  <h3 className="text-lg font-semibold">Education</h3>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={handleAddEducation}
+                    className="gap-2"
+                  >
+                    <Plus className="h-4 w-4" />
+                    Add Education
+                  </Button>
+                </div>
+
+                {education.map((edu, index) => (
+                  <Card key={index} className="p-4">
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <h4 className="font-medium">Education {index + 1}</h4>
+                        {education.length > 1 && (
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleRemoveEducation(index)}
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        )}
+                      </div>
+
+                      <div>
+                        <Label htmlFor={`institution-${index}`}>Institution *</Label>
+                        <Input
+                          id={`institution-${index}`}
+                          required
+                          value={edu.institution}
+                          onChange={(e) =>
+                            handleEducationChange(index, 'institution', e.target.value)
+                          }
+                          placeholder="University Name"
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor={`degree-${index}`}>Degree *</Label>
+                          <Input
+                            id={`degree-${index}`}
+                            required
+                            value={edu.degree}
+                            onChange={(e) =>
+                              handleEducationChange(index, 'degree', e.target.value)
+                            }
+                            placeholder="B.Tech"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor={`fieldOfStudy-${index}`}>Field of Study *</Label>
+                          <Input
+                            id={`fieldOfStudy-${index}`}
+                            required
+                            value={edu.fieldOfStudy}
+                            onChange={(e) =>
+                              handleEducationChange(index, 'fieldOfStudy', e.target.value)
+                            }
+                            placeholder="Electronics Engineering"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor={`startYear-${index}`}>Start Year *</Label>
+                          <Input
+                            id={`startYear-${index}`}
+                            type="number"
+                            required
+                            value={edu.startYear}
+                            onChange={(e) =>
+                              handleEducationChange(index, 'startYear', e.target.value)
+                            }
+                            placeholder="2018"
+                            min="1950"
+                            max="2030"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor={`endYear-${index}`}>End Year</Label>
+                          <Input
+                            id={`endYear-${index}`}
+                            type="number"
+                            value={edu.endYear}
+                            onChange={(e) =>
+                              handleEducationChange(index, 'endYear', e.target.value)
+                            }
+                            placeholder="2022"
+                            min="1950"
+                            max="2030"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </Card>
+                ))}
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="collegeUniversityName">Primary College/University *</Label>
+                    <Input
+                      id="collegeUniversityName"
+                      required
+                      value={formData.collegeUniversityName}
+                      onChange={(e) =>
+                        setFormData({ ...formData, collegeUniversityName: e.target.value })
+                      }
+                      placeholder="University Name"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="passoutYear">Passout Year *</Label>
+                    <Input
+                      id="passoutYear"
+                      type="number"
+                      required
+                      value={formData.passoutYear}
+                      onChange={(e) => setFormData({ ...formData, passoutYear: e.target.value })}
+                      placeholder="2022"
+                      min="1950"
+                      max="2030"
+                    />
+                  </div>
+                </div>
               </div>
 
-              <div>
-                <Label htmlFor="phone">Phone Number *</Label>
-                <Input
-                  id="phone"
-                  type="tel"
-                  required
-                  value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  placeholder="+91 99999 99999"
-                />
+              {/* Work Experience */}
+              <div className="space-y-4">
+                <div className="flex items-center justify-between border-b pb-2">
+                  <h3 className="text-lg font-semibold">Work Experience</h3>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={handleAddWorkExperience}
+                    className="gap-2"
+                  >
+                    <Plus className="h-4 w-4" />
+                    Add Experience
+                  </Button>
+                </div>
+
+                {workExperience.map((work, index) => (
+                  <Card key={index} className="p-4">
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <h4 className="font-medium">Experience {index + 1}</h4>
+                        {workExperience.length > 1 && (
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleRemoveWorkExperience(index)}
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        )}
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor={`companyName-${index}`}>Company Name *</Label>
+                          <Input
+                            id={`companyName-${index}`}
+                            required
+                            value={work.companyName}
+                            onChange={(e) =>
+                              handleWorkExperienceChange(index, 'companyName', e.target.value)
+                            }
+                            placeholder="Company Name"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor={`position-${index}`}>Position *</Label>
+                          <Input
+                            id={`position-${index}`}
+                            required
+                            value={work.position}
+                            onChange={(e) =>
+                              handleWorkExperienceChange(index, 'position', e.target.value)
+                            }
+                            placeholder="VLSI Engineer"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor={`workStartYear-${index}`}>Start Year *</Label>
+                          <Input
+                            id={`workStartYear-${index}`}
+                            type="number"
+                            required
+                            value={work.startYear}
+                            onChange={(e) =>
+                              handleWorkExperienceChange(index, 'startYear', e.target.value)
+                            }
+                            placeholder="2020"
+                            min="1950"
+                            max="2030"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor={`workEndYear-${index}`}>End Year</Label>
+                          <Input
+                            id={`workEndYear-${index}`}
+                            type="number"
+                            value={work.endYear}
+                            onChange={(e) =>
+                              handleWorkExperienceChange(index, 'endYear', e.target.value)
+                            }
+                            placeholder="2023"
+                            min="1950"
+                            max="2030"
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <Label htmlFor={`description-${index}`}>Description *</Label>
+                        <Textarea
+                          id={`description-${index}`}
+                          required
+                          value={work.description}
+                          onChange={(e) =>
+                            handleWorkExperienceChange(index, 'description', e.target.value)
+                          }
+                          placeholder="Describe your role and responsibilities"
+                          rows={3}
+                        />
+                      </div>
+                    </div>
+                  </Card>
+                ))}
+
+                <div>
+                  <Label htmlFor="totalWorkExperience">Total Work Experience *</Label>
+                  <Input
+                    id="totalWorkExperience"
+                    required
+                    value={formData.totalWorkExperience}
+                    onChange={(e) =>
+                      setFormData({ ...formData, totalWorkExperience: e.target.value })
+                    }
+                    placeholder="e.g., 3 years"
+                  />
+                </div>
               </div>
 
-              <div>
-                <Label htmlFor="resumeLink">Resume Link *</Label>
-                <Input
-                  id="resumeLink"
-                  type="url"
-                  required
-                  value={formData.resumeLink}
-                  onChange={(e) => setFormData({ ...formData, resumeLink: e.target.value })}
-                  placeholder="https://drive.google.com/..."
-                />
-                <p className="text-xs text-muted-foreground mt-1">
-                  Please provide a link to your resume (Google Drive, Dropbox, etc.)
-                </p>
+              {/* Compensation */}
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold border-b pb-2">Compensation</h3>
+                <div>
+                  <Label htmlFor="expectedPay">Expected Pay (Annual) *</Label>
+                  <Input
+                    id="expectedPay"
+                    required
+                    value={formData.expectedPay}
+                    onChange={(e) => setFormData({ ...formData, expectedPay: e.target.value })}
+                    placeholder="e.g., INR 10 LPA"
+                  />
+                </div>
               </div>
 
-              <div>
-                <Label htmlFor="message">Cover Letter / Additional Information</Label>
-                <Textarea
-                  id="message"
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  placeholder="Tell us why you're a great fit for this role..."
-                  rows={4}
-                />
+              {/* Resume Upload */}
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold border-b pb-2">Resume</h3>
+                <div>
+                  <Label htmlFor="resume">Upload Resume *</Label>
+                  <Input
+                    id="resume"
+                    type="file"
+                    required
+                    onChange={handleResumeChange}
+                    accept=".pdf,.doc,.docx"
+                    className="cursor-pointer"
+                  />
+                  {resumeFile && (
+                    <p className="text-sm text-muted-foreground mt-2">
+                      Selected: {resumeFile.name}
+                    </p>
+                  )}
+                  {uploadProgress > 0 && uploadProgress < 100 && (
+                    <div className="mt-2">
+                      <div className="flex items-center gap-2">
+                        <div className="flex-1 bg-muted rounded-full h-2 overflow-hidden">
+                          <div
+                            className="bg-cyan-500 h-full transition-all duration-300"
+                            style={{ width: `${uploadProgress}%` }}
+                          />
+                        </div>
+                        <span className="text-sm text-muted-foreground">{uploadProgress}%</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
 
-              <div className="flex justify-end space-x-4 pt-4">
+              {/* Additional Message */}
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold border-b pb-2">Additional Information</h3>
+                <div>
+                  <Label htmlFor="message">Cover Letter / Additional Message</Label>
+                  <Textarea
+                    id="message"
+                    value={formData.message}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    placeholder="Tell us why you're a great fit for this role..."
+                    rows={4}
+                  />
+                </div>
+              </div>
+
+              {/* Terms and Conditions */}
+              <div className="space-y-4">
+                <div className="flex items-start space-x-2">
+                  <Checkbox
+                    id="terms"
+                    checked={formData.termsAccepted}
+                    onCheckedChange={(checked) =>
+                      setFormData({ ...formData, termsAccepted: checked === true })
+                    }
+                  />
+                  <div className="grid gap-1.5 leading-none">
+                    <Label
+                      htmlFor="terms"
+                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >
+                      I accept the terms and conditions *
+                    </Label>
+                    <p className="text-sm text-muted-foreground">
+                      By submitting this application, you agree to our{' '}
+                      <Link
+                        to="/terms-and-conditions"
+                        className="text-cyan-600 hover:underline"
+                        target="_blank"
+                      >
+                        Terms and Conditions
+                      </Link>
+                      .
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Submit Button */}
+              <div className="flex gap-4 pt-4">
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => setIsApplyDialogOpen(false)}
+                  onClick={() => {
+                    setIsApplyDialogOpen(false);
+                    resetForm();
+                  }}
+                  className="flex-1"
                 >
                   Cancel
                 </Button>
                 <Button
                   type="submit"
                   disabled={submitApplication.isPending}
-                  className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700"
+                  className="flex-1 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700"
                 >
                   {submitApplication.isPending ? (
                     <>

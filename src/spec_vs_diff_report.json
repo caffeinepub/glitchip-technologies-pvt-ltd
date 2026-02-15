@@ -1,92 +1,18 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-15T07:42:57.039Z",
-  "summary": "Diff adds a multi-page React marketing site with TanStack Router routes for Home/Services/Why Us/Products/Careers/Contact, a global header/footer with logo and CTA, theme styling, and basic page/section animations with reduced-motion support. It also adds a Motoko backend with seeded jobs and endpoints for listing jobs and submitting job applications/contact forms, but several requirements are not evidenced (notably custom-domain well-known + DNS docs, favicon/app icon, and explicit stable/persistent storage across upgrades and admin listing APIs).",
-  "missing_requirements": [
-    {
-      "id": "REQ-3",
-      "requirement": "Provide a favicon/app icon based on the provided logo (IMG-20250404-WA0002.png).",
-      "reason": "The diff shows the logo used in header/footer, but no favicon/app icon files or HTML manifest changes are shown in the added files list.",
-      "evidence": [
-        "frontend/src/components/SiteHeader.tsx",
-        "frontend/src/components/SiteFooter.tsx"
-      ]
-    },
-    {
-      "id": "REQ-9",
-      "requirement": "Persist job postings/applications across canister upgrades using the template’s standard persistence approach, and provide an admin/dev API to list applications.",
-      "reason": "backend/main.mo shows in-memory Maps for jobs and jobApplications but the diff does not evidence stable variables or preupgrade/postupgrade hooks. Also, no method to list applications is visible in the provided backend snippet.",
-      "evidence": [
-        "backend/main.mo"
-      ]
-    },
-    {
-      "id": "REQ-10",
-      "requirement": "Backend exposes a method to list contact submissions (admin/dev use) and contact form submissions are persisted.",
-      "reason": "frontend calls actor.getCompanyContacts() and submitContactForm(), but the backend snippet is truncated before showing contact submission storage/list APIs. Persistence across upgrades is also not evidenced (no stable vars/hooks shown).",
-      "evidence": [
-        "frontend/src/hooks/useQueries.ts",
-        "backend/main.mo"
-      ]
-    },
-    {
-      "id": "REQ-14",
-      "requirement": "Include /.well-known/ic-domains in the frontend build output with domain value for glitchip.in, and document Cloudflare DNS record instructions for GoDaddy domain connection.",
-      "reason": "No .well-known/ic-domains file or documentation file (e.g., README) is shown in the diff summary.",
-      "evidence": [
-        "(no added file shown for /.well-known/ic-domains)"
-      ]
-    }
-  ],
-  "hallucinated_features": [
-    {
-      "description": "Added Internet Identity authentication plumbing (InternetIdentityProvider/useInternetIdentity) and actor initialization that uses an admin secret token parameter (caffeineAdminToken) to initialize access control.",
-      "reason": "BuildRequest explicitly lists third-party auth as a non-goal and states Internet Identity is supported but not required; the marketing site requirements do not request adding auth flows or admin-token URL parameter handling.",
-      "evidence": [
-        "frontend/src/main.tsx",
-        "frontend/src/hooks/useInternetIdentity.ts",
-        "frontend/src/hooks/useActor.ts",
-        "frontend/src/utils/urlParams.ts"
-      ]
-    },
-    {
-      "description": "Backend access control/authorization and user profile management APIs (get/save user profile, admin checks).",
-      "reason": "BuildRequest only requires Careers and Contact storage/APIs; user profiles and a generalized access-control system are not requested.",
-      "evidence": [
-        "backend/main.mo"
-      ]
-    }
-  ],
-  "confidence": 0.72,
+  "generatedAt": "2026-02-15T10:44:46.239Z",
+  "summary": "Diff implements backend JobPosting schema changes (adds experienceRange and salaryRange), adds a state migration, updates seeded jobs to include the requested roles (partially visible due to truncation), and updates the frontend jobs query to surface errors instead of silently failing. CareersPage changes are truncated, so some UI acceptance criteria cannot be conclusively verified from the provided evidence.",
+  "missing_requirements": [],
+  "hallucinated_features": [],
+  "confidence": 0.56,
   "changed_files": [
-    "all_files_summary.json",
     "backend/main.mo",
+    "backend/migration.mo",
     "frontend-file-summaries.txt",
-    "frontend/CUSTOM_DOMAIN.md",
-    "frontend/index.css",
-    "frontend/index.html",
-    "frontend/public/.well-known/ic-domains",
-    "frontend/src/App.tsx",
-    "frontend/src/components/MarketingLayout.tsx",
-    "frontend/src/components/PageTransition.tsx",
-    "frontend/src/components/SectionReveal.tsx",
-    "frontend/src/components/SiteFooter.tsx",
-    "frontend/src/components/SiteHeader.tsx",
-    "frontend/src/hooks/useActor.ts",
-    "frontend/src/hooks/useInternetIdentity.ts",
-    "frontend/src/hooks/usePrefersReducedMotion.ts",
     "frontend/src/hooks/useQueries.ts",
-    "frontend/src/index.css",
-    "frontend/src/main.tsx",
     "frontend/src/pages/CareersPage.tsx",
-    "frontend/src/pages/ContactPage.tsx",
-    "frontend/src/pages/HomePage.tsx",
-    "frontend/src/pages/ProductsPage.tsx",
-    "frontend/src/pages/ServicesPage.tsx",
-    "frontend/src/pages/WhyUsPage.tsx",
-    "frontend/src/utils/urlParams.ts",
-    "frontend/tailwind.config.js",
+    "frontend/src/utils/jobId.ts",
     "project_state.json"
   ]
 }

@@ -1,22 +1,19 @@
 # Specification
 
 ## Summary
-**Goal:** Deliver a modern, multi-page marketing website for Glitchip Technologies Pvt. Ltd. with VLSI-focused content, consistent branding using the provided logo, smooth transitions, and backend-backed Careers + Contact forms.
+**Goal:** Restore reliable job listing display on the Careers page and add five new VLSI engineering job postings with experience and salary ranges.
 
 **Planned changes:**
-- Create top-level pages and routes: Home (/), Services (/services), Why Us (/why-us), Products (/products), Careers (/careers), Contact (/contact), all responsive with consistent layout.
-- Implement a global header + footer on all pages with primary navigation, active state, a prominent “Get in touch” CTA, social placeholders, company name, and a compact services list in the footer.
-- Apply the provided logo (IMG-20250404-WA0002.png) in header/footer and generate a favicon/app icon based on it.
-- Build the Home page with VLSI-focused hero messaging (headline/subheadline/CTA), services overview, Why Us teaser, stats/capabilities highlight, and final CTA, using high-quality visuals.
-- Build the Services page listing exactly: Physical Design, Design Verification, DFT (Design for Testability), AI Automation for Semiconductors, RTL Engineering—each with summary, key capabilities, typical deliverables, and an engagement model teaser, plus an icon/illustration per service.
-- Build the Products page showing the exact prominent message “Stay Tuned for the product” and an empty-state layout reserved for future product cards.
-- Build the Why Us page with structured VLSI-relevant differentiators and at least one diagram-like/timeline/process visual section.
-- Build the Careers page with a modern jobs list, job detail view (Job Description, Responsibilities, Pay, Job ID), and an application form tied to the selected Job ID; persist submissions server-side.
-- Implement backend APIs/storage (single Motoko actor) to seed and serve job postings (>= 3) with stable Job IDs; accept applications (name, email, phone, resume link/attachment placeholder text, optional message, Job ID); reject unknown Job IDs; provide listing endpoints for jobs and applications (admin/dev use).
-- Build the Contact page with a contact form (name, email, company, message) plus a static contact info section (placeholders); persist submissions to backend and provide a listing endpoint (admin/dev use).
-- Add smooth page transitions and section reveal animations across the site with reduced-motion support.
-- Add a coherent visual theme (colors/typography/spacing/components) aligned to a semiconductor/VLSI brand and consistent across pages.
-- Add generated static visual assets under `frontend/public/assets/generated` and use them across Home, Services, Why Us, and Careers.
-- Add `/.well-known/ic-domains` for `glitchip.in` and include project-local DNS instructions for Cloudflare-managed DNS (placeholders until canister IDs are known).
+- Fix the Careers (/careers) jobs list regression so jobs reliably render when they exist, including troubleshooting data-fetching (React Query/actor readiness), backend fetch failures, and rendering/empty-state logic.
+- Add explicit error and empty states for the Careers jobs section (error shown on fetch failure; clear “no open positions” message when zero jobs exist).
+- Ensure job listings are visible to anonymous users (no Internet Identity required to view jobs).
+- Extend the JobPosting data model to include an explicit experience range field that can represent “0–5 years,” and display it on job cards and in the apply/dialog or job detail view.
+- Seed/update the available jobs to include exactly these five roles with required fields:
+  - Physical Design Engineer
+  - Design Engineer
+  - Design Verification Engineer
+  - DFT Engineer
+  - AI Automation Engineer
+- Ensure each of the five roles has a unique 6–7 character alphanumeric Job ID and displays salary as “INR 5–20 LPA,” and that applications can be submitted successfully for each job ID.
 
-**User-visible outcome:** Visitors can navigate a branded Glitchip marketing site across all required pages with smooth transitions, view services and company differentiators, see a careers list with job details and submit applications, and send messages via a contact form—both applications and contact submissions are stored in the backend.
+**User-visible outcome:** Visiting /careers shows a working, non-empty jobs list when jobs exist (with clear error/empty states when applicable), and users can view and apply to the five new roles with displayed experience (0–5 years) and salary (INR 5–20 LPA) details without needing to log in.

@@ -7,6 +7,7 @@ import WhyUsPage from './pages/WhyUsPage';
 import ProductsPage from './pages/ProductsPage';
 import CareersPage from './pages/CareersPage';
 import ContactPage from './pages/ContactPage';
+import TermsAndConditionsPage from './pages/TermsAndConditionsPage';
 import MarketingLayout from './components/MarketingLayout';
 import { Toaster } from '@/components/ui/sonner';
 
@@ -58,6 +59,12 @@ const contactRoute = createRoute({
   component: ContactPage,
 });
 
+const termsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/terms-and-conditions',
+  component: TermsAndConditionsPage,
+});
+
 // Create route tree
 const routeTree = rootRoute.addChildren([
   indexRoute,
@@ -66,6 +73,7 @@ const routeTree = rootRoute.addChildren([
   productsRoute,
   careersRoute,
   contactRoute,
+  termsRoute,
 ]);
 
 // Create router

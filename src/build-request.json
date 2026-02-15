@@ -1,305 +1,78 @@
 {
   "kind": "build_request",
-  "title": "Revamp Glitchip Technologies marketing site with services, careers, transitions, and branded assets",
-  "priority": "normal",
+  "title": "Fix Careers jobs list regression and add 5 new VLSI engineering job postings",
+  "priority": "high",
   "requirements": [
     {
-      "id": "REQ-1",
-      "text": "Create a full multi-page marketing website for \"Glitchip Technologies Pvt. Ltd.\" with the following top-level pages and routes: Home (/), Services (/services), Why Us (/why-us), Products (/products), Careers (/careers), and Contact (/contact).",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-2",
-          "msg-3"
-        ],
-        "quotes": [
-          "Use the Home...",
-          "Use the services...",
-          "Use the products...",
-          "Use the careers page...",
-          "Use the Why Us..."
-        ]
-      },
-      "acceptanceCriteria": [
-        "Navigating to /, /services, /why-us, /products, /careers, and /contact renders distinct pages with relevant content and consistent layout.",
-        "All pages are reachable via global header navigation and have working internal links/CTAs.",
-        "Pages are responsive across mobile/tablet/desktop."
-      ]
-    },
-    {
-      "id": "REQ-2",
-      "text": "Implement a global header and footer that appear on all main and subpages, including: primary navigation, prominent \"Get in touch\" CTA, social links placeholders, company name, and a compact services list in the footer.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-3"
-        ],
-        "quotes": [
-          "then also give the best global header and footer for the all the main and subpages"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Header and footer render consistently on all routes.",
-        "Active navigation state is visible for the current route.",
-        "Header is usable on mobile (hamburger/drawer menu or equivalent)."
-      ]
-    },
-    {
-      "id": "REQ-3",
-      "text": "Apply the provided company logo image (IMG-20250404-WA0002.png) as the primary brand mark across the site (header, footer, favicon/app icon where applicable), ensuring it displays crisply on light and dark backgrounds.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-3"
-        ],
-        "quotes": [
-          "I have attached the company logo to use and the company name is Glitchip Technologies Pvt. Ltd."
-        ]
-      },
-      "acceptanceCriteria": [
-        "Logo appears in header and footer.",
-        "Logo maintains correct aspect ratio and is not pixelated on standard and high-DPI screens.",
-        "A favicon/app icon is present and based on the provided logo."
-      ]
-    },
-    {
-      "id": "REQ-4",
-      "text": "Build a high-impact Home page with crystal-clear VLSI-focused messaging and sections such as: hero (headline + subheadline + CTA), services overview, differentiators teaser (Why Us), highlight stats/capabilities, and a final CTA section. Use relevant high-quality visuals and illustrations.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-3"
-        ],
-        "quotes": [
-          "Use the Home, as a good, attractive and well given relevant images and descriptions crystal clear"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Home page contains at least: Hero, Services overview, Why Us teaser, and CTA sections with readable, non-placeholder copy.",
-        "Home page includes at least 2 distinct visual assets (hero + section illustration/pattern).",
-        "Primary CTA from hero leads to Contact or Services and works."
-      ]
-    },
-    {
-      "id": "REQ-5",
-      "text": "Create a Services page featuring exactly these offerings: Physical Design, Design Verification, DFT (Design for Testability), AI Automation for Semiconductors, and RTL Engineering. Each service must have: summary, key capabilities, typical deliverables, and engagement model teaser (e.g., flexible teams).",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-3"
-        ],
-        "quotes": [
-          "Use the services, as Physical Design, Design Verification, DFT(Design for testability), AI Automation for semiconductors, RTL engineering."
-        ]
-      },
-      "acceptanceCriteria": [
-        "Services page lists exactly the five named services with distinct sections/cards.",
-        "Each service shows: summary, capabilities, deliverables, and a short engagement note.",
-        "Each service section includes an icon/illustration asset and consistent styling."
-      ]
-    },
-    {
-      "id": "REQ-6",
-      "text": "Create a Products page that prominently displays the placeholder message: \"Stay Tuned for the product\" and includes a clean layout that supports adding product cards later (without implementing products now).",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-3"
-        ],
-        "quotes": [
-          "Use the products, as \"Stay Tuned for the product\""
-        ]
-      },
-      "acceptanceCriteria": [
-        "Products page displays the exact text \"Stay Tuned for the product\" prominently.",
-        "Layout includes a clearly defined area for future product entries (empty state)."
-      ]
-    },
-    {
-      "id": "REQ-7",
-      "text": "Create a Why Us page with strong, well-presented value propositions relevant to a VLSI services company (e.g., quality, signoff rigor, turnaround, security, domain expertise, scalable teams) and include proof-style sections (process, quality approach, engagement, tooling familiarity) using clear visual hierarchy.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-3"
-        ],
-        "quotes": [
-          "Use the Why Us, as a good well given information"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Why Us page includes multiple differentiators presented as a structured set of sections/cards.",
-        "Page includes at least one diagram-like or timeline/process visual section (static, non-interactive acceptable)."
-      ]
-    },
-    {
-      "id": "REQ-8",
-      "text": "Build a Careers page with a unique, modern interface that supports: (1) a jobs list, (2) a job detail view, and (3) an easy application flow. Each job must display: Job Description, Responsibilities, Pay, and Job ID.",
+      "id": "REQ-31",
+      "text": "Fix the regression causing the Careers page jobs list to show no jobs after the recent update by identifying whether the failure is due to React Query/actor readiness, a failed backend call, or a rendering/empty-state bug, and update the frontend and/or backend so job postings reliably appear on /careers.",
       "target": "both",
       "source": {
         "messageIds": [
-          "msg-3"
+          "msg-8"
         ],
         "quotes": [
-          "Use the careers page, as a well given and never before and unique interface with ease of application process consisting of details of Job Description, responsibilities, Pay, Job ID."
+          "The career pages are not showing the jobs after recent update, so just check this issue and update accordingly."
         ]
       },
       "acceptanceCriteria": [
-        "Careers page shows a list of jobs and allows selecting a job to view full details.",
-        "Job detail view displays Job Description, Responsibilities, Pay, and Job ID fields.",
-        "An \"Apply\" action opens an application form tied to the selected Job ID.",
-        "Submitting an application returns a visible success state and the submission is persisted server-side."
+        "Navigating to /careers displays a non-empty list of jobs when jobs exist in the canister.",
+        "If the backend call to fetch jobs fails, the UI shows a clear error state (not a blank section) and logs the error for debugging.",
+        "If there are truly zero jobs returned, the UI shows an explicit empty-state message (e.g., “No open positions at the moment. Please check back soon.”) instead of appearing broken.",
+        "The jobs query executes successfully for anonymous users (not logged in) and does not require Internet Identity to see job listings."
       ]
     },
     {
-      "id": "REQ-9",
-      "text": "Implement backend storage and APIs for Careers: maintain a set of job postings (seeded with sample roles) and accept job applications (name, email, phone, resume link/attachment placeholder text, optional message, and the Job ID). Provide query methods for listing jobs, getting a job by Job ID, and listing applications (admin/dev use).",
-      "target": "backend",
-      "source": {
-        "messageIds": [
-          "msg-3"
-        ],
-        "quotes": [
-          "ease of application process consisting of details of Job Description, responsibilities, Pay, Job ID."
-        ]
-      },
-      "acceptanceCriteria": [
-        "Backend exposes methods to: list jobs, fetch a job by Job ID, and submit an application referencing a Job ID.",
-        "Jobs are seeded with at least 3 sample postings and stable Job IDs.",
-        "Applications are persisted across canister upgrades within the template’s standard persistence approach.",
-        "Backend rejects applications for unknown Job IDs with a clear error."
-      ]
-    },
-    {
-      "id": "REQ-10",
-      "text": "Add a Contact page with a contact form (name, email, company, message) and a company contact section (email/phone/address placeholders). Form submissions must be stored in the backend for retrieval (admin/dev use).",
+      "id": "REQ-32",
+      "text": "Add support for an explicit experience range to job postings (0–5 years for the new roles) by extending the JobPosting data model and ensuring the Careers UI displays this experience range on the job cards and in the apply dialog/job detail view.",
       "target": "both",
       "source": {
         "messageIds": [
-          "msg-2",
-          "msg-3"
+          "msg-8"
         ],
         "quotes": [
-          "Ask me any further details that you need go ahead"
+          "With exp level from 0-5 years"
         ]
       },
       "acceptanceCriteria": [
-        "Contact page includes a working form and a separate static contact info section.",
-        "Submitting the form shows a success state and persists to the backend.",
-        "Backend exposes a method to list contact submissions (admin/dev use)."
+        "Backend JobPosting includes a dedicated experience field (or equivalent structured representation) that can represent “0–5 years”.",
+        "Careers job cards show the experience range for each job.",
+        "The apply dialog/job detail view also shows the experience range for the selected job.",
+        "Existing job listing and job lookup endpoints continue to work with the updated JobPosting shape."
       ]
     },
     {
-      "id": "REQ-11",
-      "text": "Implement smooth, modern page transitions and section reveal animations across the site, ensuring performance-friendly motion and accessible reduced-motion behavior.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-3"
-        ],
-        "quotes": [
-          "use good transitions for every page"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Route/page transitions are visible between major pages.",
-        "Animations do not trigger excessive layout shift and remain smooth on mobile.",
-        "When the user prefers reduced motion, animations are minimized/disabled."
-      ]
-    },
-    {
-      "id": "REQ-12",
-      "text": "Add and use a coherent, distinctive visual theme (colors, typography, spacing, components) appropriate for a semiconductor/VLSI engineering brand; apply consistently across all pages and components. Avoid a generic look and avoid default blue/purple-heavy palettes unless required by the provided logo.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-3"
-        ],
-        "quotes": [
-          "then go for it... and assets"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Typography scale, spacing, and component styling are consistent across pages.",
-        "Theme is clearly distinct (not default component styling) and uses a restrained, professional palette that complements the provided logo.",
-        "Buttons, links, cards, and section headers share consistent styling rules."
-      ]
-    },
-    {
-      "id": "REQ-13",
-      "text": "Generate and include high-quality static visual assets (illustrations/patterns/icons) aligned to VLSI/semiconductor themes and place them in frontend/public/assets/generated. Use these assets across Home, Services, Why Us, and Careers pages.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-3"
-        ],
-        "quotes": [
-          "use good transitions for every page, and assets,"
-        ]
-      },
-      "acceptanceCriteria": [
-        "All required generated images are present under frontend/public/assets/generated and referenced directly by the frontend.",
-        "At least one generated asset is used on each of: Home, Services, Why Us, and Careers pages.",
-        "Assets are optimized (reasonable file sizes) and render crisply on retina displays."
-      ]
-    },
-    {
-      "id": "REQ-14",
-      "text": "Prepare the project for custom domain connection to the GoDaddy-registered domain (glitchip.in) by including the Internet Computer custom domain well-known file (/.well-known/ic-domains) and documenting the DNS records needed for Cloudflare-based DNS management.",
+      "id": "REQ-33",
+      "text": "Update the seeded/available job postings to include exactly these five roles: Physical Design Engineer, Design Engineer, Design Verification Engineer, DFT Engineer, AI Automation Engineer. Each role must use an experience range of 0–5 years and a salary range of 5–20 (expressed clearly in user-facing text, e.g., “INR 5–20 LPA”), and each must have an appropriate unique Job ID that matches the existing 6–7 character alphanumeric (A–Z, 0–9) format requirement.",
       "target": "both",
       "source": {
         "messageIds": [
-          "msg-2"
+          "msg-8"
         ],
         "quotes": [
-          "tell me how to connect the website... and then we will connect that in the go daddy website."
+          "Then add, Physical Design Engineer, Design Engineer, Design Verification Engineer, DFT Engineer, AI Automation Engineer. roles,\n\nWith exp level from 0-5 years, salary ranges from 5-20, With appropriate JOB ID's"
         ]
       },
       "acceptanceCriteria": [
-        "A /.well-known/ic-domains file exists in the frontend build output with the domain value for glitchip.in (and any specified subdomain if added later).",
-        "Project includes a short, project-local set of instructions listing the DNS record types/values that will be needed after deployment (placeholders acceptable until canister ID is known)."
+        "The backend job list contains these five roles and exposes them via getAllJobs().",
+        "Each of the five roles has a unique Job ID that is 6–7 characters and strictly alphanumeric (A–Z, 0–9).",
+        "Each of the five roles shows an experience range of 0–5 years in the UI.",
+        "Each of the five roles shows a salary range of 5–20 in the UI in clear English formatting (e.g., “INR 5–20 LPA”).",
+        "Users can click “Apply Now” and successfully submit an application against any of the five job IDs without backend validation errors."
       ]
     }
   ],
   "constraints": [
-    "Backend must remain a single Motoko actor (no additional backend services).",
-    "Do not modify files under frontend/src/components/ui or any paths marked immutable by the system.",
-    "Use English for all user-facing site content.",
-    "Use the uploaded logo file IMG-20250404-WA0002.png as the brand logo."
+    "Respect the single-actor backend architecture: keep all Motoko logic in backend/main.mo (only add backend/migration.mo if an actual state migration is required).",
+    "Do not edit files under frontend/src/components/ui, frontend/src/hooks/useInternetIdentity.ts(x), frontend/src/hooks/useActor.ts, or frontend/src/main.tsx (immutable paths)."
   ],
   "nonGoals": [
-    "Implementing actual product functionality beyond the Products placeholder message.",
-    "Integrating third-party auth providers (only Internet Identity is supported, and it is not required here).",
-    "Real-time features (websockets/chat) or external databases.",
-    "Full ATS/HR integrations or email delivery for applications/contacts."
+    "Adding real-time job updates, push notifications, or chat features.",
+    "Implementing a full admin UI for managing job postings (create/update/delete) beyond seeding and retrieval.",
+    "Integrating third-party ATS, email delivery, or external databases."
   ],
   "imageRequirements": {
-    "required": [
-      "Semiconductor chip/circuit hero illustration with abstract geometry, dark background, teal accents (glitchip-hero.dim_1920x1080.png)",
-      "Set of five line icons representing: Physical Design, Design Verification, DFT, AI Automation, RTL Engineering (glitchip-service-icons.dim_512x512.png)",
-      "Abstract circuit-board pattern background, seamless or large canvas (glitchip-circuit-pattern.dim_2048x2048.png)",
-      "Careers illustration showing a futuristic workstation/engineering theme (glitchip-careers-illustration.dim_1600x900.png)",
-      "Why Us infographic-style illustration with pillars/process motif (glitchip-whyus-illustration.dim_1600x900.png)"
-    ],
+    "required": [],
     "edits": []
-  },
-  "userProfileUpdate": {
-    "goalsToAdd": [
-      "Revamp Glitchip Technologies Pvt. Ltd. website with modern design, animations, and VLSI-focused content",
-      "Deploy on Internet Computer and connect to GoDaddy-registered domain glitchip.in"
-    ],
-    "goalsToRemove": [],
-    "preferencesToAdd": [
-      "Prefer modern transitions/animations and premium visual assets",
-      "Careers page should be uniquely designed and application flow should be easy"
-    ],
-    "preferencesToRemove": [],
-    "miscToAdd": [
-      "Reference site inspiration: https://www.andgatetech.com/",
-      "Current live site: https://glitchip.in/"
-    ],
-    "miscToRemove": [],
-    "fieldsToSet": {},
-    "fieldsToDelete": []
   }
 }

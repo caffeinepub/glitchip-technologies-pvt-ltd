@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import SectionReveal from '../components/SectionReveal';
+import SafeImage from '../components/SafeImage';
 import { Cpu, Zap, Shield, Users, ArrowRight, CheckCircle2 } from 'lucide-react';
 
 const services = [
@@ -45,24 +46,24 @@ export default function HomePage() {
     <div className="flex flex-col">
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-background via-background to-muted/20">
-        <div className="absolute inset-0 opacity-5">
-          <img
-            src="/assets/generated/glitchip-circuit-pattern.dim_2048x2048.png"
+        <div className="absolute inset-0 opacity-10">
+          <SafeImage
+            src="/assets/generated/glitchip-hero-bg-replacement.dim_2048x2048.png"
             alt=""
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover object-center"
           />
         </div>
-        <div className="container relative py-24 md:py-32 lg:py-40">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="container relative py-20 md:py-28 lg:py-36">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <SectionReveal>
-              <div className="space-y-6">
+              <div className="space-y-6 max-w-2xl">
                 <Badge className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white border-0">
                   Leading VLSI Services Provider
                 </Badge>
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
                   Accelerating Semiconductor Innovation
                 </h1>
-                <p className="text-xl text-muted-foreground max-w-2xl">
+                <p className="text-xl text-muted-foreground">
                   Glitchip Technologies delivers world-class VLSI design, verification, and AI
                   automation services. Partner with us to bring your silicon vision to reality.
                 </p>
@@ -70,14 +71,14 @@ export default function HomePage() {
                   <Link to="/contact">
                     <Button
                       size="lg"
-                      className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700"
+                      className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 w-full sm:w-auto"
                     >
                       Get Started
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   </Link>
                   <Link to="/services">
-                    <Button size="lg" variant="outline">
+                    <Button size="lg" variant="outline" className="w-full sm:w-auto">
                       Explore Services
                     </Button>
                   </Link>
@@ -85,12 +86,14 @@ export default function HomePage() {
               </div>
             </SectionReveal>
             <SectionReveal>
-              <div className="relative">
-                <img
-                  src="/assets/generated/glitchip-hero.dim_1920x1080.png"
-                  alt="Semiconductor Design"
-                  className="rounded-lg shadow-2xl"
-                />
+              <div className="relative w-full max-w-2xl mx-auto lg:mx-0">
+                <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg shadow-2xl">
+                  <SafeImage
+                    src="/assets/generated/glitchip-hero-chip-replacement.dim_1600x1200.jpg"
+                    alt="Semiconductor Design - Close-up of CPU microchip"
+                    className="w-full h-full object-cover object-center hero-chip-blend"
+                  />
+                </div>
               </div>
             </SectionReveal>
           </div>
@@ -206,10 +209,10 @@ export default function HomePage() {
                 </Link>
               </div>
               <div className="relative">
-                <img
+                <SafeImage
                   src="/assets/generated/glitchip-whyus-illustration.dim_1600x900.png"
-                  alt="Why Choose Us"
-                  className="rounded-lg shadow-xl"
+                  alt="Why Choose Us - Glitchip Technologies advantages"
+                  className="rounded-lg shadow-xl w-full"
                 />
               </div>
             </div>

@@ -83,4 +83,30 @@
             scroll-behavior: auto !important;
         }
     }
+
+    /* Hero chip blend effect - subtle edge softening for seamless integration */
+    .hero-chip-blend {
+        position: relative;
+    }
+
+    .hero-chip-blend::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+            ellipse at center,
+            transparent 40%,
+            oklch(var(--background) / 0.15) 75%,
+            oklch(var(--background) / 0.35) 90%,
+            oklch(var(--background) / 0.5) 100%
+        );
+        pointer-events: none;
+        border-radius: inherit;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        .hero-chip-blend {
+            transition: transform 0.3s ease;
+        }
+    }
 }
