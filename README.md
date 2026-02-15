@@ -1,2 +1,3 @@
-# glitchip-technologies-pvt-ltd
-Exported from Caffeine project: Glitchip Technologies Pvt. Ltd.
+## Glitchip Technologies Pvt. Ltd.
+
+To run app build and run docker image: `docker build -t app . docker run -it --network host app`

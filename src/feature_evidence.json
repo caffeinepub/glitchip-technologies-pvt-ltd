@@ -1,0 +1,274 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-create-a-full-multi-page-marketing-website-for-glitchip-technologies-pvt-ltd-with-the-following-top-level-pages-and-routes-home-services-services-why-us-why-us-products-products-careers-careers-and-contact-contact",
+      "featureTitle": "Create a full multi-page marketing website for \"Glitchip Technologies Pvt. Ltd.\" with the following top-level pages and routes: Home (/), Services (/services), Why Us (/why-us), Products (/products), Careers (/careers), and Contact (/contact).",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/pages/CareersPage.tsx",
+        "frontend/src/pages/ContactPage.tsx",
+        "frontend/src/pages/HomePage.tsx",
+        "frontend/src/pages/ProductsPage.tsx",
+        "frontend/src/pages/ServicesPage.tsx",
+        "frontend/src/pages/WhyUsPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-a-global-header-and-footer-that-appear-on-all-main-and-subpages-including-primary-navigation-prominent-get-in-touch-cta-social-links-placeholders-company-name-and-a-compact-services-list-in-the-footer",
+      "featureTitle": "Implement a global header and footer that appear on all main and subpages, including: primary navigation, prominent \"Get in touch\" CTA, social links placeholders, company name, and a compact services list in the footer.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/MarketingLayout.tsx",
+        "frontend/src/components/SiteFooter.tsx",
+        "frontend/src/components/SiteHeader.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-2"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-apply-the-provided-company-logo-image-img-20250404-wa0002-png-as-the-primary-brand-mark-across-the-site-header-footer-favicon-app-icon-where-applicable-ensuring-it-displays-crisply-on-light-and-dark-backgrounds",
+      "featureTitle": "Apply the provided company logo image (IMG-20250404-WA0002.png) as the primary brand mark across the site (header, footer, favicon/app icon where applicable), ensuring it displays crisply on light and dark backgrounds.",
+      "files": [
+        "frontend/index.html",
+        "frontend/src/components/SiteFooter.tsx",
+        "frontend/src/components/SiteHeader.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-build-a-high-impact-home-page-with-crystal-clear-vlsi-focused-messaging-and-sections-such-as-hero-headline-subheadline-cta-services-overview-differentiators-teaser-why-us-highlight-stats-capabilities-and-a-final-cta-section-use-relevant-high-quality-visuals-and-illustrations",
+      "featureTitle": "Build a high-impact Home page with crystal-clear VLSI-focused messaging and sections such as: hero (headline + subheadline + CTA), services overview, differentiators teaser (Why Us), highlight stats/capabilities, and a final CTA section. Use relevant high-quality visuals and illustrations.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/pages/HomePage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-4"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-create-a-services-page-featuring-exactly-these-offerings-physical-design-design-verification-dft-design-for-testability-ai-automation-for-semiconductors-and-rtl-engineering-each-service-must-have-summary-key-capabilities-typical-deliverables-and-engagement-model-teaser-e-g-flexible-teams",
+      "featureTitle": "Create a Services page featuring exactly these offerings: Physical Design, Design Verification, DFT (Design for Testability), AI Automation for Semiconductors, and RTL Engineering. Each service must have: summary, key capabilities, typical deliverables, and engagement model teaser (e.g., flexible teams).",
+      "files": [
+        "frontend/src/pages/ServicesPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-5"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-create-a-products-page-that-prominently-displays-the-placeholder-message-stay-tuned-for-the-product-and-includes-a-clean-layout-that-supports-adding-product-cards-later-without-implementing-products-now",
+      "featureTitle": "Create a Products page that prominently displays the placeholder message: \"Stay Tuned for the product\" and includes a clean layout that supports adding product cards later (without implementing products now).",
+      "files": [
+        "frontend/src/pages/ProductsPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-6"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-create-a-why-us-page-with-strong-well-presented-value-propositions-relevant-to-a-vlsi-services-company-e-g-quality-signoff-rigor-turnaround-security-domain-expertise-scalable-teams-and-include-proof-style-sections-process-quality-approach-engagement-tooling-familiarity-using-clear-visual-hierarchy",
+      "featureTitle": "Create a Why Us page with strong, well-presented value propositions relevant to a VLSI services company (e.g., quality, signoff rigor, turnaround, security, domain expertise, scalable teams) and include proof-style sections (process, quality approach, engagement, tooling familiarity) using clear visual hierarchy.",
+      "files": [
+        "frontend/src/pages/WhyUsPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-7"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-build-a-careers-page-with-a-unique-modern-interface-that-supports-1-a-jobs-list-2-a-job-detail-view-and-3-an-easy-application-flow-each-job-must-display-job-description-responsibilities-pay-and-job-id",
+      "featureTitle": "Build a Careers page with a unique, modern interface that supports: (1) a jobs list, (2) a job detail view, and (3) an easy application flow. Each job must display: Job Description, Responsibilities, Pay, and Job ID.",
+      "files": [
+        "frontend/src/pages/CareersPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-8"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-a-contact-page-with-a-contact-form-name-email-company-message-and-a-company-contact-section-email-phone-address-placeholders-form-submissions-must-be-stored-in-the-backend-for-retrieval-admin-dev-use",
+      "featureTitle": "Add a Contact page with a contact form (name, email, company, message) and a company contact section (email/phone/address placeholders). Form submissions must be stored in the backend for retrieval (admin/dev use).",
+      "files": [
+        "frontend/src/pages/ContactPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-10"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-smooth-modern-page-transitions-and-section-reveal-animations-across-the-site-ensuring-performance-friendly-motion-and-accessible-reduced-motion-behavior",
+      "featureTitle": "Implement smooth, modern page transitions and section reveal animations across the site, ensuring performance-friendly motion and accessible reduced-motion behavior.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/PageTransition.tsx",
+        "frontend/src/components/SectionReveal.tsx",
+        "frontend/src/hooks/usePrefersReducedMotion.ts",
+        "frontend/src/index.css"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-11"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-and-use-a-coherent-distinctive-visual-theme-colors-typography-spacing-components-appropriate-for-a-semiconductor-vlsi-engineering-brand-apply-consistently-across-all-pages-and-components-avoid-a-generic-look-and-avoid-default-blue-purple-heavy-palettes-unless-required-by-the-provided-logo",
+      "featureTitle": "Add and use a coherent, distinctive visual theme (colors, typography, spacing, components) appropriate for a semiconductor/VLSI engineering brand; apply consistently across all pages and components. Avoid a generic look and avoid default blue/purple-heavy palettes unless required by the provided logo.",
+      "files": [
+        "frontend/src/components/MarketingLayout.tsx",
+        "frontend/src/index.css",
+        "frontend/tailwind.config.js"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-12"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-generate-and-include-high-quality-static-visual-assets-illustrations-patterns-icons-aligned-to-vlsi-semiconductor-themes-and-place-them-in-frontend-public-assets-generated-use-these-assets-across-home-services-why-us-and-careers-pages",
+      "featureTitle": "Generate and include high-quality static visual assets (illustrations/patterns/icons) aligned to VLSI/semiconductor themes and place them in frontend/public/assets/generated. Use these assets across Home, Services, Why Us, and Careers pages.",
+      "files": [
+        "frontend/src/pages/CareersPage.tsx",
+        "frontend/src/pages/HomePage.tsx",
+        "frontend/src/pages/ServicesPage.tsx",
+        "frontend/src/pages/WhyUsPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-13"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-prepare-the-project-for-custom-domain-connection-to-the-godaddy-registered-domain-glitchip-in-by-including-the-internet-computer-custom-domain-well-known-file-well-known-ic-domains-and-documenting-the-dns-records-needed-for-cloudflare-based-dns-management",
+      "featureTitle": "Prepare the project for custom domain connection to the GoDaddy-registered domain (glitchip.in) by including the Internet Computer custom domain well-known file (/.well-known/ic-domains) and documenting the DNS records needed for Cloudflare-based DNS management.",
+      "files": [
+        "frontend/CUSTOM_DOMAIN.md",
+        "frontend/public/.well-known/ic-domains"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-14"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

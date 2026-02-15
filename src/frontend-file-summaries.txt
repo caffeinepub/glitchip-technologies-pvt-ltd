@@ -1,0 +1,21 @@
+{
+  "frontend/src/App.tsx": "Main application component with TanStack Router setup, theme provider, and route definitions for all pages (Home, Services, Why Us, Products, Careers, Contact).",
+  "frontend/src/components/MarketingLayout.tsx": "Shared layout wrapper that renders the site header, page content with transitions, and footer for all routes.",
+  "frontend/src/components/SiteHeader.tsx": "Global navigation header with logo, desktop/mobile navigation, active route highlighting, and \"Get in Touch\" CTA button.",
+  "frontend/src/components/SiteFooter.tsx": "Global footer with company info, logo, services list, social links, and attribution with UTM tracking.",
+  "frontend/src/components/PageTransition.tsx": "Route-level transition wrapper that animates page entry/exit with reduced-motion support.",
+  "frontend/src/components/SectionReveal.tsx": "Intersection-observer-based section reveal animation component with reduced-motion support.",
+  "frontend/src/hooks/usePrefersReducedMotion.ts": "Custom hook to detect user's reduced-motion preference for accessible animations.",
+  "frontend/src/hooks/useQueries.ts": "React Query hooks for all backend operations (jobs, applications, contact form, company contacts).",
+  "frontend/src/pages/HomePage.tsx": "Home page with hero section, stats, services overview, why-us teaser, and CTA sections using generated assets.",
+  "frontend/src/pages/ServicesPage.tsx": "Services page showcasing all five VLSI services with capabilities, deliverables, and engagement models.",
+  "frontend/src/pages/WhyUsPage.tsx": "Why Us page with differentiators, process timeline, and quality commitment sections.",
+  "frontend/src/pages/ProductsPage.tsx": "Products page with \"Stay Tuned for the product\" message and placeholder grid for future products.",
+  "frontend/src/pages/CareersPage.tsx": "Careers page with job listings, detailed job cards, and application dialog with form submission.",
+  "frontend/src/pages/ContactPage.tsx": "Contact page with contact form, company contact information, and business hours.",
+  "frontend/src/index.css": "Global styles with professional tech-focused OKLCH color system (cyan/blue accents), motion-safe utilities, and typography.",
+  "frontend/tailwind.config.js": "Tailwind configuration with extended theme tokens, custom shadows, Inter font family, and design system tokens.",
+  "frontend/index.html": "HTML entry point with favicon, Inter font preload, and proper meta tags.",
+  "frontend/public/.well-known/ic-domains": "Internet Computer custom domain configuration file for glitchip.in.",
+  "frontend/CUSTOM_DOMAIN.md": "Documentation for connecting the deployed site to glitchip.in via Cloudflare DNS management."
+}

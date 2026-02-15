@@ -1,0 +1,191 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "Revamp and rebuild Glitchip Technologies Pvt. Ltd. marketing website with modern design, transitions/assets, key pages (Home, Services, Products, Careers, Why Us) and prepare deployment + connection to the existing GoDaddy domain.",
+  "architectural_notes": [
+    "Domain connection approach: keep domain registered at GoDaddy, use Cloudflare for DNS management to point domain to the deployed site."
+  ],
+  "known_issues": [],
+  "isFixRequest": false,
+  "imageRequirements": "## Required Images\n- Semiconductor chip/circuit hero illustration with abstract geometry, dark background, teal accents (glitchip-hero.dim_1920x1080.png)\n- Set of five line icons representing: Physical Design, Design Verification, DFT, AI Automation, RTL Engineering (glitchip-service-icons.dim_512x512.png)\n- Abstract circuit-board pattern background, seamless or large canvas (glitchip-circuit-pattern.dim_2048x2048.png)\n- Careers illustration showing a futuristic workstation/engineering theme (glitchip-careers-illustration.dim_1600x900.png)\n- Why Us infographic-style illustration with pillars/process motif (glitchip-whyus-illustration.dim_1600x900.png)",
+  "existing_features": [
+    {
+      "id": "feature-create-a-full-multi-page-marketing-website-for-glitchip-technologies-pvt-ltd-with-the-following-top-level-pages-and-routes-home-services-services-why-us-why-us-products-products-careers-careers-and-contact-contact",
+      "title": "Create a full multi-page marketing website for \"Glitchip Technologies Pvt. Ltd.\" with the following top-level pages and routes: Home (/), Services (/services), Why Us (/why-us), Products (/products), Careers (/careers), and Contact (/contact).",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-a-global-header-and-footer-that-appear-on-all-main-and-subpages-including-primary-navigation-prominent-get-in-touch-cta-social-links-placeholders-company-name-and-a-compact-services-list-in-the-footer",
+      "title": "Implement a global header and footer that appear on all main and subpages, including: primary navigation, prominent \"Get in touch\" CTA, social links placeholders, company name, and a compact services list in the footer.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-the-provided-company-logo-image-img-20250404-wa0002-png-as-the-primary-brand-mark-across-the-site-header-footer-favicon-app-icon-where-applicable-ensuring-it-displays-crisply-on-light-and-dark-backgrounds",
+      "title": "Apply the provided company logo image (IMG-20250404-WA0002.png) as the primary brand mark across the site (header, footer, favicon/app icon where applicable), ensuring it displays crisply on light and dark backgrounds.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-a-high-impact-home-page-with-crystal-clear-vlsi-focused-messaging-and-sections-such-as-hero-headline-subheadline-cta-services-overview-differentiators-teaser-why-us-highlight-stats-capabilities-and-a-final-cta-section-use-relevant-high-quality-visuals-and-illustrations",
+      "title": "Build a high-impact Home page with crystal-clear VLSI-focused messaging and sections such as: hero (headline + subheadline + CTA), services overview, differentiators teaser (Why Us), highlight stats/capabilities, and a final CTA section. Use relevant high-quality visuals and illustrations.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-services-page-featuring-exactly-these-offerings-physical-design-design-verification-dft-design-for-testability-ai-automation-for-semiconductors-and-rtl-engineering-each-service-must-have-summary-key-capabilities-typical-deliverables-and-engagement-model-teaser-e-g-flexible-teams",
+      "title": "Create a Services page featuring exactly these offerings: Physical Design, Design Verification, DFT (Design for Testability), AI Automation for Semiconductors, and RTL Engineering. Each service must have: summary, key capabilities, typical deliverables, and engagement model teaser (e.g., flexible teams).",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-products-page-that-prominently-displays-the-placeholder-message-stay-tuned-for-the-product-and-includes-a-clean-layout-that-supports-adding-product-cards-later-without-implementing-products-now",
+      "title": "Create a Products page that prominently displays the placeholder message: \"Stay Tuned for the product\" and includes a clean layout that supports adding product cards later (without implementing products now).",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-why-us-page-with-strong-well-presented-value-propositions-relevant-to-a-vlsi-services-company-e-g-quality-signoff-rigor-turnaround-security-domain-expertise-scalable-teams-and-include-proof-style-sections-process-quality-approach-engagement-tooling-familiarity-using-clear-visual-hierarchy",
+      "title": "Create a Why Us page with strong, well-presented value propositions relevant to a VLSI services company (e.g., quality, signoff rigor, turnaround, security, domain expertise, scalable teams) and include proof-style sections (process, quality approach, engagement, tooling familiarity) using clear visual hierarchy.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-a-careers-page-with-a-unique-modern-interface-that-supports-1-a-jobs-list-2-a-job-detail-view-and-3-an-easy-application-flow-each-job-must-display-job-description-responsibilities-pay-and-job-id",
+      "title": "Build a Careers page with a unique, modern interface that supports: (1) a jobs list, (2) a job detail view, and (3) an easy application flow. Each job must display: Job Description, Responsibilities, Pay, and Job ID.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-contact-page-with-a-contact-form-name-email-company-message-and-a-company-contact-section-email-phone-address-placeholders-form-submissions-must-be-stored-in-the-backend-for-retrieval-admin-dev-use",
+      "title": "Add a Contact page with a contact form (name, email, company, message) and a company contact section (email/phone/address placeholders). Form submissions must be stored in the backend for retrieval (admin/dev use).",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-smooth-modern-page-transitions-and-section-reveal-animations-across-the-site-ensuring-performance-friendly-motion-and-accessible-reduced-motion-behavior",
+      "title": "Implement smooth, modern page transitions and section reveal animations across the site, ensuring performance-friendly motion and accessible reduced-motion behavior.",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-and-use-a-coherent-distinctive-visual-theme-colors-typography-spacing-components-appropriate-for-a-semiconductor-vlsi-engineering-brand-apply-consistently-across-all-pages-and-components-avoid-a-generic-look-and-avoid-default-blue-purple-heavy-palettes-unless-required-by-the-provided-logo",
+      "title": "Add and use a coherent, distinctive visual theme (colors, typography, spacing, components) appropriate for a semiconductor/VLSI engineering brand; apply consistently across all pages and components. Avoid a generic look and avoid default blue/purple-heavy palettes unless required by the provided logo.",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-generate-and-include-high-quality-static-visual-assets-illustrations-patterns-icons-aligned-to-vlsi-semiconductor-themes-and-place-them-in-frontend-public-assets-generated-use-these-assets-across-home-services-why-us-and-careers-pages",
+      "title": "Generate and include high-quality static visual assets (illustrations/patterns/icons) aligned to VLSI/semiconductor themes and place them in frontend/public/assets/generated. Use these assets across Home, Services, Why Us, and Careers pages.",
+      "reqIds": [
+        "REQ-13"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-prepare-the-project-for-custom-domain-connection-to-the-godaddy-registered-domain-glitchip-in-by-including-the-internet-computer-custom-domain-well-known-file-well-known-ic-domains-and-documenting-the-dns-records-needed-for-cloudflare-based-dns-management",
+      "title": "Prepare the project for custom domain connection to the GoDaddy-registered domain (glitchip.in) by including the Internet Computer custom domain well-known file (/.well-known/ic-domains) and documenting the DNS records needed for Cloudflare-based DNS management.",
+      "reqIds": [
+        "REQ-14"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Create new Glitchip Technologies Pvt. Ltd. website modeled after andgatetech.com structure with modern design and clear content",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Add global site navigation: best-in-class header and footer across all main and subpages",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Build Home page with attractive, relevant images and crystal-clear descriptions",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Build Services pages/section for Physical Design, Design Verification, DFT, AI Automation for Semiconductors, and RTL Engineering",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Build Products page/section with placeholder messaging: \"Stay Tuned for the product\"",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Build Careers page with unique UI and easy application flow including Job Description, Responsibilities, Pay, and Job ID fields",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Build \"Why Us\" page/section with strong, well-presented company value propositions",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "Implement good transitions/animations across pages and include high-quality design assets",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-9",
+      "summary": "Use provided company logo throughout the site branding",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-10",
+      "summary": "Plan deployment and connect the rebuilt site to the existing GoDaddy-registered domain (glitchip.in), likely via Cloudflare DNS",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-19",
+      "summary": "Implement backend storage and APIs for Careers: maintain a set of job postings (seeded with sample roles) and accept job applications (name, email, phone, resume link/attachment placeholder text, optional message, and the Job ID). Provide query methods for listing jobs, getting a job by Job ID, and listing applications (admin/dev use).",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "Glitchip Technologies Pvt. Ltd.",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}
